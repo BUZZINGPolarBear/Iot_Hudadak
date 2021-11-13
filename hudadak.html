@@ -10,10 +10,10 @@
 <body>
     <div id="mainStatusBox">
         <div id = "mainStatusText">
-            <p>육추실 온도 : 36.5℃</p>
-            <p>육추실 습도 : 45%</p>
-            <p>먹이 양 : 많음</p>
-            <p>병아리 활동성 : 좋음</p>
+            <p>육추실 온도 : <div id="tempStatus">36.5</div>℃</p> <!--왜 온도부분만 div로 나눠주냐면 나중에 js로 이 div부분만 수정해주려고!-->
+            <p>육추실 습도 : <div id="humidStatus">45</div>%</p>
+            <p>먹이 양 : <div id="foodStatus">많음</div></p>
+            <p>병아리 활동성 : <div id="chickStatus">좋음</div></p>
         </div>    
         <div id="mainStatusBtn">
             <table class="buttonTable" style="border-color: black; border-style: solid;">
@@ -33,4 +33,5 @@
     
     
 </body>
+<script src="./hudadak.js"></script>
 </html>
