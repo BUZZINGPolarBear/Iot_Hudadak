@@ -1,0 +1,20 @@
+body{
+    background-color: black;
+}
+#mainStatusBox{
+    background-color: white;
+    width: 400px;
+    height: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    text-align: center;
+}
+#mainStatusBtn{
+    margin: auto;
+}
+
+.buttonTable{
+    margin: 50px auto;
+    width: 350px;
+    height: 150px;
+}
