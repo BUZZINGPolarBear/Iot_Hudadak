@@ -1,7 +1,17 @@
 body{
     background-color: black;
+    font-family: 'KOTRAHOPE';
+    
+}
+@font-face {
+  font-family: 'KOTRAHOPE';
+  font-size: 17px;
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/KOTRAHOPE.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
 #mainStatusBox{
+    font-family: 'KOTRAHOPE';
     background-color: white;
     width: 400px;
     height: 400px;
@@ -9,18 +19,21 @@ body{
     padding: 30px;
     text-align: center;
 }
-#mainStatusBtn{
-    margin: auto;
-}
-
 .buttonTable{
-    margin: 50px auto;
-    width: 350px;
-    height: 150px;
+  margin: auto;
 }
-
 .chickBoxStatus{
+    font-family: 'KOTRAHOPE';
+    font-size: 17px;
     border: none;
     width: 50px;
     font-size: 14px;
+}
+
+#BTN {
+  font-family: 'KOTRAHOPE';
+  font-size: 17px;
+  width: 100px;
+  height: 50px;
+  margin : 20px 25px 10px 25px;
 }

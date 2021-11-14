@@ -5,12 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="hudadak.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Gamja+Flower&family=Rubik:wght@300&display=swap" rel="stylesheet">
     <script src="./js/config.js"></script>
     
     <title>후다닭</title>
 </head>
 <body>
     <div id="mainStatusBox">
+      <img src = './chickImage.png' style="width: 70px; height: 50px;margin: 15px 0px;">
         <div id = "mainStatusText">
             <p>육추실 온도 : <input type="text" class="chickBoxStatus" id="tempStatus" value="36.5℃"></p> <!--왜 온도부분만 div로 나눠주냐면 나중에 js로 이 div부분만 수정해주려고!-->
             <p>육추실 습도 : <input type="text" class="chickBoxStatus" id="humidStatus" value="36.5℃"></p>
@@ -18,15 +23,22 @@
             <p>병아리 활동성 : <input type="text" class="chickBoxStatus" id="chickStatus" value="36.5℃"></p>
         </div>    
         <div id="mainStatusBtn">
-            <table class="buttonTable" style="border-color: black; border-style: solid;">
+            <table class="buttonTable">
                 <thead>
+                
                   <tr>
-                    <td>BULMA버튼</td>
-                    <td>넣어</td>
+                    <td>
+                    <button id = "BTN" class="button is-warning" >온열등 ON</button>
+                    <button id = "BTN"class="button is-warning" >가습 하기</button>
+                  </td>
                   </tr>
+
                   <tr>
-                    <td>주세</td>
-                    <td>요ㅎㅎㅎ</td>
+                    <td>
+                    <button id = "BTN"class="button is-warning" >먹이 급여</button>
+                    <button id = "BTN"class="button is-warning" >물 주기</button>
+                    </td>
+
                   </tr>
                 </thead>
             </table>
