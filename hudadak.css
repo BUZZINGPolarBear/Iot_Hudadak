@@ -18,3 +18,9 @@ body{
     width: 350px;
     height: 150px;
 }
+
+.chickBoxStatus{
+    border: none;
+    width: 50px;
+    font-size: 14px;
+}

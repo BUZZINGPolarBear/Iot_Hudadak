@@ -6,15 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="hudadak.css">
     <script src="./js/config.js"></script>
+    
     <title>후다닭</title>
 </head>
 <body>
     <div id="mainStatusBox">
         <div id = "mainStatusText">
-            <p>육추실 온도 : <div id="tempStatus">36.5</div>℃</p> <!--왜 온도부분만 div로 나눠주냐면 나중에 js로 이 div부분만 수정해주려고!-->
-            <p>육추실 습도 : <div id="humidStatus">45</div>%</p>
-            <p>먹이 양 : <div id="foodStatus">많음</div></p>
-            <p>병아리 활동성 : <div id="chickStatus">좋음</div></p>
+            <p>육추실 온도 : <input type="text" class="chickBoxStatus" id="tempStatus" value="36.5℃"></p> <!--왜 온도부분만 div로 나눠주냐면 나중에 js로 이 div부분만 수정해주려고!-->
+            <p>육추실 습도 : <input type="text" class="chickBoxStatus" id="humidStatus" value="36.5℃"></p>
+            <p>먹이 양 : <input type="text" class="chickBoxStatus" id="foodStatus" value="36.5℃"></p>
+            <p>병아리 활동성 : <input type="text" class="chickBoxStatus" id="chickStatus" value="36.5℃"></p>
         </div>    
         <div id="mainStatusBtn">
             <table class="buttonTable" style="border-color: black; border-style: solid;">
@@ -34,5 +35,6 @@
     
     
 </body>
+<!-- <script type="module" src="./js/hudadak.ts"></script> -->
 <script src="./js/hudadak.js"></script>
 </html>
