@@ -15,6 +15,7 @@
  <p align="center"> <img src="https://user-images.githubusercontent.com/35029025/141653014-bf7eaf14-6d87-43bf-b075-8fe6a9e958e3.png"></p>
 
  <p align="center"> 그림 1 육추시기에 따른 적정 온도표 </p>
+ 
 *	또한 마이크를 달아 항시 병아리의 소리를 수음한다. 병아리의 움직임은 활력 징후, 온도의 상태, 천적의 침입 여부를 가늠할 수 있는 힌트가 된다.
 
 <p align="center"> <img src="https://user-images.githubusercontent.com/35029025/141653020-640f21e3-6745-42b2-8e7d-bf068f3beefd.png"></p>
