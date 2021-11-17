@@ -9,13 +9,11 @@ void setup(){
 }
 
 void loop(){
+  digitalWrite(motorA_inputA, LOW);
+  digitalWrite(motorA_inputB, LOW);
+  delay(5000);
+  
   digitalWrite(motorA_inputA, HIGH);
   digitalWrite(motorA_inputB, LOW);
-  delay(2000);
-
-  digitalWrite(motorA_inputA, LOW);
-  digitalWrite(motorA_inputB, HIGH);
-  delay(2000);
-
-  
+  delay(10000); 
 }
