@@ -3,9 +3,7 @@ bool status=1;
 
 void setup() {
   // put your setup code here, to run once:
-  //pinMode(relayModule, OUTPUT);
-  digitalWrite(relayModule, 0);
-  delay(3000);
+  pinMode(relayModule, OUTPUT);
 }
 
 void loop() {
