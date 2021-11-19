@@ -13,7 +13,7 @@ void loop(){
   digitalWrite(motorA_inputB, LOW);
   delay(5000);
   
-  digitalWrite(motorA_inputA, HIGH);
-  digitalWrite(motorA_inputB, LOW);
+  digitalWrite(motorA_inputA, LOW);
+  digitalWrite(motorA_inputB, HIGH);
   delay(10000); 
 }
