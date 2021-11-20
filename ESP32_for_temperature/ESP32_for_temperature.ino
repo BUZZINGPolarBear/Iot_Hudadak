@@ -2,11 +2,31 @@
 #include <SPI.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BME280.h>
+#include <AWS_IOT.h>
+#include <WiFi.h>
+#include <Arduino_JSON.h>
+AWS_IOT testButton;
 #include <LiquidCrystal_I2C.h>
 
 #define BME_CS 5 // cs for esp32 vspi
 #define SEALEVELPRESSURE_HPA (1013.25)
 
+
+const char* ssid = "BUDONG Wifi";
+const char* password = "64196336";
+char HOST_ADDRESS[] = "a3llcbaumch20d-ats.iot.ap-northeast-2.amazonaws.com";
+char CLIENT_ID[]= "ESP32ForTemperature";
+char sTOPIC_NAME[]= "$aws/things/ESP32_BME280/shadow/update/delta"; // subscribe topic name
+char pTOPIC_NAME[]= "$aws/things/ESP32_BME280/shadow/update"; // publish topic name
+
+int status = WL_IDLE_STATUS;
+int msgCount=0,msgReceived = 0;
+char payload[512];
+char rcvdPayload[512];
+const int buttonPin = 15; // pushbutton pin
+const int ledPin=16;
+unsigned long preMil = 0;
+const long intMil = 5000; 
 int delayTime;
 int lcdColumns = 16;
 int lcdRows = 2;
@@ -14,24 +34,46 @@ int lcdRows = 2;
 Adafruit_BME280 bme(BME_CS); // hardware SPI
 LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);  
 
+void mySubCallBackHandler (char *topicName, int payloadLen, char *payLoad)
+{
+  strncpy(rcvdPayload,payLoad,payloadLen);
+  rcvdPayload[payloadLen] = 0;
+  msgReceived = 1;
+}
+
 void setup() {
   Serial.begin(115200);
-  Serial.println(F("BME280 test"));
   bool status;
   // default settings
-  status = bme.begin();
-  if (!status) {
-  Serial.println("Could not find a valid BME280 sensor, check wiring, address, sensor ID!");
-  Serial.print("SensorID was: 0x"); Serial.println(bme.sensorID(),16);
-  Serial.print(" ID of 0xFF probably means a bad address, a BMP 180 or BMP 085\n");
-  Serial.print(" ID of 0x56-0x58 represents a BMP 280,\n");
-  Serial.print(" ID of 0x60 represents a BME 280.\n");
-  Serial.print(" ID of 0x61 represents a BME 680.\n");
-  while (1) delay(10);
+  Serial.println(WiFi.getMode());
+  WiFi.disconnect(true);
+  delay(1000);
+  WiFi.mode(WIFI_STA);
+  delay(1000);
+  Serial.print("WIFI status = ");
+  Serial.println(WiFi.getMode()); //++choi
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi..");
   }
-  Serial.println("-- Default Test --");
-  delayTime = 1000;
-  Serial.println();
+  Serial.println("Connected to wifi");
+ if(testButton.connect(HOST_ADDRESS,CLIENT_ID)== 0) {
+  Serial.println("Connected to AWS");
+  delay(1000);
+  if(0==testButton.subscribe(sTOPIC_NAME,mySubCallBackHandler)) {
+    Serial.println("Subscribe Successfull");
+  }
+  else {
+    Serial.println("Subscribe Failed, Check the Thing Name and Certificates");
+    while(1);
+    }
+  }
+  else {
+    Serial.println("AWS connection failed, Check the HOST Address");
+    while(1);
+  }
+  status = bme.begin();
   lcd.begin();
 }
 
@@ -39,9 +81,11 @@ void loop()
 {
   printValues();
 }
+
 void printValues()
 {
-  lcd_print_status(bme.readTemperature(), bme.readHumidity(), 1000);
+  lcd_print_status(bme.readTemperature(), bme.readHumidity(), 5000);
+  
 } 
 
 void lcd_print(String first_line_print, String second_line_print, int delay_time)
@@ -53,11 +97,27 @@ void lcd_print(String first_line_print, String second_line_print, int delay_time
   delay(delay_time);
 }
 
-void lcd_print_status(int temp, int humid, int delay_time)
+void lcd_print_status(int temperature, int humid, int delay_time)
 {
   lcd.setCursor(0,0);
-  lcd.print("temp: " + String(temp)+"*C");
+  lcd.print("temp: " + String(temperature)+"*C");
   lcd.setCursor(0,1);
   lcd.print("humid: " + String(humid)+"%");
   delay(delay_time);
+  publishStatusTopic(temperature, humid);
+}
+
+void publishStatusTopic(int temperature, int humid)
+{
+  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid) + "}}}";
+  Serial.println(temp);
+  char toChar[1000];
+  strcpy(toChar, temp.c_str());
+  sprintf(payload,toChar);
+  if(testButton.publish(pTOPIC_NAME,payload) == 0) {
+    Serial.print("Publish Message:");
+    Serial.println(payload);
+  }
+  else
+    Serial.println("Publish failed");
 }
