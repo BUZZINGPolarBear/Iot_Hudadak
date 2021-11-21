@@ -24,7 +24,7 @@ int msgCount=0,msgReceived = 0;
 char payload[512];
 char rcvdPayload[512];
 const int buttonPin = 15; // pushbutton pin
-const int ledPin=16;
+const int soundModule = 34;
 unsigned long preMil = 0;
 const long intMil = 5000; 
 int delayTime;
@@ -84,7 +84,9 @@ void loop()
 
 void printValues()
 {
-  lcd_print_status(bme.readTemperature(), bme.readHumidity(), 5000);
+  int temperature = bme.readTemperature();
+  int humid = bme.readHumidity();
+  lcd_print_status(temperature, humid, 5000);
   
 } 
 
@@ -101,15 +103,19 @@ void lcd_print_status(int temperature, int humid, int delay_time)
 {
   lcd.setCursor(0,0);
   lcd.print("temp: " + String(temperature)+"*C");
+  //lcd.print("온도: " + String(temperature)+"*C");
   lcd.setCursor(0,1);
   lcd.print("humid: " + String(humid)+"%");
+  //lcd.print("습도: " + String(humid)+"%");
   delay(delay_time);
-  publishStatusTopic(temperature, humid);
+  //publishStatusTopic(temperature, humid);
+  TESTpublishStatusTopic(temperature, humid);
 }
 
 void publishStatusTopic(int temperature, int humid)
 {
-  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid) + "}}}";
+  int chickSound = analogRead(soundModule);
+  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound) + "}}}";
   Serial.println(temp);
   char toChar[1000];
   strcpy(toChar, temp.c_str());
@@ -120,4 +126,16 @@ void publishStatusTopic(int temperature, int humid)
   }
   else
     Serial.println("Publish failed");
+}
+
+void TESTpublishStatusTopic(int temperature, int humid)
+{
+  int chickSound = analogRead(soundModule);
+  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound) + "}}}";
+  Serial.println(temp);
+  char toChar[1000];
+  strcpy(toChar, temp.c_str());
+  sprintf(payload,toChar);
+  Serial.print("Publish Message:");
+  Serial.println(payload);
 }
