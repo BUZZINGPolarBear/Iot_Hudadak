@@ -4,23 +4,51 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="hudadak.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cute+Font&family=Gamja+Flower&family=Rubik:wght@300&display=swap" rel="stylesheet">
-    <script src="./js/config.js"></script>
-    
+    <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet">
     <title>후다닭</title>
+    <style>
+      body{
+        font-family: 'Cute Font', cursive;
+      }
+      #mainStatusBox{
+          background-color: white;
+          width: 400px;
+          height: 400px;
+          margin: 50px auto;
+          padding: 30px;
+          text-align: center;
+      }
+      .buttonTable{
+        margin: auto;
+      }
+      .chickBoxStatus{
+          font-family: 'Cute Font', cursive;
+          font-size: 20px;
+          border: none;
+          width: 50px;
+          font-size: 14px;
+      }
+
+      #BTN {
+        font-family: 'Cute Font', cursive;
+        font-size: 17px;
+        width: 100px;
+        height: 50px;
+        margin : 20px 25px 10px 25px;
+      }
+    </style>
 </head>
-<body>
+<body style="">
     <div id="mainStatusBox">
-      <img src = './chickImage.png' style="width: 70px; height: 50px;margin: 15px 0px;">
+      <img src = 'https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/chickImage.png' style="width: 70px; height: 50px;margin: 15px 0px;">
         <div id = "mainStatusText">
-            <p>육추실 온도 : <input type="text" class="chickBoxStatus" id="tempStatus" value="36.5℃"></p> <!--왜 온도부분만 div로 나눠주냐면 나중에 js로 이 div부분만 수정해주려고!-->
-            <p>육추실 습도 : <input type="text" class="chickBoxStatus" id="humidStatus" value="36.5℃"></p>
-            <p>먹이 양 : <input type="text" class="chickBoxStatus" id="foodStatus" value="36.5℃"></p>
-            <p>병아리 활동성 : <input type="text" class="chickBoxStatus" id="chickStatus" value="36.5℃"></p>
+            <p>육추실 온도 : <input type="text" class="chickBoxStatus" id="tempStatus" value="36.5도" readonly></p> 
+            <p>육추실 습도 : <input type="text" class="chickBoxStatus" id="humidStatus" value="36.5%" readonly></p>
+            <p>먹이 양 : <input type="text" class="chickBoxStatus" id="foodStatus" value="36.5℃" readonly></p>
+            <p>병아리 활동성 : <input type="text" class="chickBoxStatus" id="chickStatus" value="36.5℃" readonly></p>
         </div>    
         <div id="mainStatusBtn">
             <table class="buttonTable">
@@ -47,6 +75,4 @@
     
     
 </body>
-<!-- <script type="module" src="./js/hudadak.ts"></script> -->
-<script src="./js/hudadak.js"></script>
 </html>
