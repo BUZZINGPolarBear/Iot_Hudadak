@@ -4,8 +4,10 @@
 #include <WiFi.h>
 
 // Replace with your network credentials
+
 const char* ssid = "Juni Wifi";
 const char* password = "wnsgnlRj";
+
 
 // Set web server port number to 80
 WiFiServer server(80);
@@ -13,11 +15,9 @@ WiFiServer server(80);
 // Variable to store the HTTP request
 String header;
 
-
 // Auxiliar variables to store the current output state
 String output16State = "off";
 String output17State = "off";
-
 // Assign output variables to GPIO pins
 const int output16 = 16;
 const int output17 = 17;
@@ -149,6 +149,7 @@ void loop()
             // CSS to style the on/off buttons
             // Feel free to change the background-color and font-size attributes to fit your preferences
           
+
     // Close the connection
     client.stop();
     Serial.println("Client disconnected.");
