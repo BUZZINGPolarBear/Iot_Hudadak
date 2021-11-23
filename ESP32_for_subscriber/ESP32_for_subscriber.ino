@@ -23,14 +23,24 @@ const int waterPumpA=18;
 const int waterPumpB=19;
 const int humidPumpA=22;
 const int humidPumpB=23;
+const int servoPin = 21;
 
-bool isWaterPumpActivated = 0;
-bool isHumidPumpActivated = 0;
-int temp;
-int humid;
+bool isWaterPumpActivated = false;
+bool isHumidPumpActivated = false;
+int temp=40;
+int humid=70;
 int sound;
-int touchPin;
+int touchPin=70;
+String str_temp="off";
+String str_humid="off";
+String str_water="off";
+String str_feed="off";
+unsigned long long humidPumpNow=0;
+unsigned long long waterPumpNow=0;
 long long gotTopic=0;
+
+int humidPumpThreshold = 10000;
+int waterPumpThreshold = 3000;
 
 void mySubCallBackHandler (char *topicName, int payloadLen, char *payLoad)
 {
@@ -94,46 +104,37 @@ void loop() {
     humid = state ["humid"];
     sound = state ["depth"];
     touchPin = state ["touchPin"];
+    JSONVar userSelected = myObj["userSelected"];
+    str_temp = userSelected["temp"];
+    str_humid = userSelected["humid"];
+    str_water = userSelected["water"];
+    str_feed = userSelected["feed"];
+    //depth = state ["depth"];
 
     Serial.println(state);
     Serial.println(temp);
     Serial.println(humid);
     Serial.println(sound);
     Serial.println(touchPin);
-    if(temp<30)
+    
+    Serial.println(str_temp);
+    Serial.println(str_humid);
+    Serial.println(str_water);
+    Serial.println(str_feed);
+   // Serial.println("depth: " + String(depth));
+    if(temp<30)digitalWrite(relayModule, LOW);//ON
+    else digitalWrite(relayModule, HIGH);//OFF
+    
+    if((humid<50&&isHumidPumpActivated==false) || str_humid=="on")
     {
-      digitalWrite(relayModule, LOW);//ON
+        digitalWrite(humidPumpA, 1);
+        digitalWrite(relayModule, 0);
+        humidPumpNow = millis();
     }
-    else 
+    else if(humid>=50 || str_humid=="off")
     {
-      digitalWrite(relayModule, HIGH);//OFF
+      digitalWrite(humidPumpA,0);
+      humidPumpNow = millis();
     }
-  } 
-  if(humid<50)
-  {
-    ActivateHumidWaterPump(1500);
-    humid = 60;
-  }
-  
-  if(touchPin<38)
-  {
-    ActivateWaterPump(3000);
-    touchPin = 40;
-  }
-}
-
-void ActivateHumidWaterPump(int delayTime)
-{
-  digitalWrite(humidPumpA, HIGH);
-  delay(delayTime);
-  digitalWrite(humidPumpA, LOW);
-  delay(3000);
-}
-
-void ActivateWaterPump(int delayTime)
-{
-    digitalWrite(waterPumpA, HIGH);
-    delay(3000);
-    digitalWrite(waterPumpA, LOW);
-    delay(3000);
+  }  
 }
