@@ -11,6 +11,7 @@ AWS_IOT testButton;
 #define BME_CS 5 // cs for esp32 vspi
 #define SEALEVELPRESSURE_HPA (1013.25)
 
+
 const int touchPin =4;
 int readPinState;
 const int trigPin = 26;
@@ -47,10 +48,8 @@ void mySubCallBackHandler (char *topicName, int payloadLen, char *payLoad)
 
 void setup() {
   Serial.begin(115200);
-
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-
   bool status;
   // default settings
   Serial.println(WiFi.getMode());
@@ -123,7 +122,7 @@ void lcd_print_status(int temperature, int humid, int delay_time)
 void publishStatusTopic(int temperature, int humid)
 {
   int chickSound = analogRead(soundModule);
-  
+
   String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound) + "}}}";
   Serial.println(temp);
   char toChar[1000];
@@ -139,6 +138,7 @@ void publishStatusTopic(int temperature, int humid)
 
 void TESTpublishStatusTopic(int temperature, int humid)
 {
+
   long duration, distance;
   digitalWrite(trigPin, LOW); // trig low for 2us
   delayMicroseconds(2);
