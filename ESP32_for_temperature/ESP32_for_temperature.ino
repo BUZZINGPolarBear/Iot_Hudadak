@@ -12,12 +12,19 @@ AWS_IOT testButton;
 #define SEALEVELPRESSURE_HPA (1013.25)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
 const int touchPin =4;
 int readPinState;
 const int trigPin = 26;
 const int echoPin = 25;
+<<<<<<< HEAD
 >>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
 
 const char* ssid = "Juni WIFI";
 const char* password = "wnsgnlRj";
@@ -51,12 +58,17 @@ void mySubCallBackHandler (char *topicName, int payloadLen, char *payLoad)
 void setup() {
   Serial.begin(115200);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
 
 >>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
   bool status;
   // default settings
   Serial.println(WiFi.getMode());
@@ -130,9 +142,13 @@ void publishStatusTopic(int temperature, int humid)
 {
   int chickSound = analogRead(soundModule);
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
   
 >>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
+
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
   String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound) + "}}}";
   Serial.println(temp);
   char toChar[1000];
@@ -149,9 +165,13 @@ void publishStatusTopic(int temperature, int humid)
 void TESTpublishStatusTopic(int temperature, int humid)
 {
 <<<<<<< HEAD
+<<<<<<< HEAD
   int chickSound = analogRead(soundModule);
   String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound) + "}}}";
 =======
+=======
+
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
   long duration, distance;
   digitalWrite(trigPin, LOW); // trig low for 2us
   delayMicroseconds(2);
@@ -164,7 +184,10 @@ void TESTpublishStatusTopic(int temperature, int humid)
 
   int chickSound = analogRead(soundModule);
   String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound)+ ",\"depth\":" + String(distance)+ ",\"touchPin\":" + String(readPinState) + "}}}";
+<<<<<<< HEAD
 >>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
   Serial.println(temp);
   char toChar[1000];
   strcpy(toChar, temp.c_str());

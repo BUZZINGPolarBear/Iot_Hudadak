@@ -5,18 +5,26 @@
 
 // Replace with your network credentials
 <<<<<<< HEAD
+<<<<<<< HEAD
 const char* ssid = "Juni Wifi";
 const char* password = "wnsgnlRj";
 =======
 const char* ssid = "BUDONG Wifi";
 const char* password = "64196336";
 >>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
+
+const char* ssid = "Juni Wifi";
+const char* password = "wnsgnlRj";
+
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
 
 // Set web server port number to 80
 WiFiServer server(80);
 
 // Variable to store the HTTP request
 String header;
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 
@@ -27,6 +35,8 @@ String output17State = "off";
 // Assign output variables to GPIO pins
 const int output16 = 16;
 const int output17 = 17;
+=======
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
 
 =======
 // Auxiliar variables to store the current output state
@@ -35,7 +45,11 @@ String output17State = "off";
 // Assign output variables to GPIO pins
 const int output16 = 16;
 const int output17 = 17;
+<<<<<<< HEAD
 >>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
+
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
 // Current time
 unsigned long currentTime = millis();
 // Previous time
@@ -137,6 +151,9 @@ void loop()
 
             // Display the HTML web page
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
             client.println("<!DOCTYPE html><html lang=\"ko\">");
             client.println("<!DOCTYPE html>");
             client.println("<html lang=\"ko\"><head>");
@@ -164,6 +181,7 @@ void loop()
             // CSS to style the on/off buttons
             // Feel free to change the background-color and font-size attributes to fit your preferences
           
+<<<<<<< HEAD
 =======
             client.println("<!DOCTYPE html><html>");
             client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
@@ -223,6 +241,9 @@ void loop()
     // Clear the header variable
     header = "";
 >>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
+
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
     // Close the connection
     client.stop();
     Serial.println("Client disconnected.");
