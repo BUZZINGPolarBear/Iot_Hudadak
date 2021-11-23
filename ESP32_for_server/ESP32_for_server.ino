@@ -4,24 +4,52 @@
 #include <WiFi.h>
 
 // Replace with your network credentials
+<<<<<<< HEAD
+<<<<<<< HEAD
+const char* ssid = "Juni Wifi";
+const char* password = "wnsgnlRj";
+=======
+const char* ssid = "BUDONG Wifi";
+const char* password = "64196336";
+>>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
 
 const char* ssid = "Juni Wifi";
 const char* password = "wnsgnlRj";
 
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
 
 // Set web server port number to 80
 WiFiServer server(80);
 
 // Variable to store the HTTP request
 String header;
+<<<<<<< HEAD
+<<<<<<< HEAD
 
+
+// Auxiliar variables to store the current output state
+String output16State = "off";
+String output17State = "off";
+
+// Assign output variables to GPIO pins
+const int output16 = 16;
+const int output17 = 17;
+=======
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
+
+=======
 // Auxiliar variables to store the current output state
 String output16State = "off";
 String output17State = "off";
 // Assign output variables to GPIO pins
 const int output16 = 16;
 const int output17 = 17;
+<<<<<<< HEAD
+>>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
 
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
 // Current time
 unsigned long currentTime = millis();
 // Previous time
@@ -122,6 +150,10 @@ void loop()
             }
 
             // Display the HTML web page
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
             client.println("<!DOCTYPE html><html lang=\"ko\">");
             client.println("<!DOCTYPE html>");
             client.println("<html lang=\"ko\"><head>");
@@ -149,7 +181,69 @@ void loop()
             // CSS to style the on/off buttons
             // Feel free to change the background-color and font-size attributes to fit your preferences
           
+<<<<<<< HEAD
+=======
+            client.println("<!DOCTYPE html><html>");
+            client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+            client.println("<link rel=\"icon\" href=\"data:,\">");
 
+            // CSS to style the on/off buttons
+            // Feel free to change the background-color and font-size attributes to fit your preferences
+            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}");
+            client.println(".button { background-color: #4CAF50;border: none; color: white; padding: 16px 40px;");
+            client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
+            client.println(".button2 {background-color: #555555;}</style></head>");
+
+            // Web Page Heading
+            client.println("<body><h1>ESP32 Web Server</h1>");
+
+            // Display current state, and ON/OFF buttons for GPIO 16
+            client.println("<p>GPIO 16 - State " + output16State + "</p>");
+
+            // If the output16State is off, it displays the ON button
+            if (output16State == "off")
+            {
+              client.println("<p><a href=\"/16/on\"><button class=\"button\">ON</button></a></p>");
+            }
+            else
+            {
+              client.println("<p><a href=\"/16/off\"><button class=\"button button2\">OFF</button></a></p>");
+            }
+            // Display current state, and ON/OFF buttons for GPIO 17
+            client.println("<p>GPIO 17 - State " + output17State + "</p>");
+            // If the output17State is off, it displays the ON button
+            if (output17State == "off")
+            {
+              client.println("<p><a href=\"/17/on\"><button class=\"button\">ON</button></a></p>");
+            }
+            else
+            {
+              client.println("<p><a href=\"/17/off\"><button class=\"button button2\">OFF</button></a></p>");
+            }
+            client.println("</body></html>");
+            // The HTTP response ends with another blank line
+            client.println();
+            // Break out of the while loop
+            break;
+          } //** if (currentLine.length() == 0) {
+          else
+          { // if you got a newline, then clear currentLine
+            currentLine = "";
+          }
+        } //** if (c == '\n') {
+        else if (c != '\r')
+        {                   // if you got anything else but a carriage return character,
+          currentLine += c; // add it to the end of the currentLine
+        }
+      } //* if (client.available()){
+    }   //** while
+
+    // Clear the header variable
+    header = "";
+>>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
+
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
     // Close the connection
     client.stop();
     Serial.println("Client disconnected.");
