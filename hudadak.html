@@ -15,7 +15,7 @@
       }
       #mainStatusBox{
           background-color: white;
-          width: 70%;
+          width: 500px;
           margin: 5px auto;
           text-align: center;
       }
@@ -35,20 +35,21 @@
           width: 150px;
           font-size: 35px;
       }
-      /* .text_size {
-        width:90%;
-        height : 100%;
+      .text_size {
+        width: 450px;
+        height : 50px;
         font-size: 35px;
         padding-left : 25%;
-      }  */
+      } 
       .buttonTable{
         width: 100%;
+        margin-left : 30px;
       }
       #BTN {
         font-family: 'Dongle', cursive;
-        font-size: 40px;
-        width: 30%;
-        height: 30%;
+        font-size: 30px;
+        width: 200px;
+        height: 100px;
         margin : 3% 4% 5% 3%;
       }
     </style>
@@ -56,7 +57,7 @@
 
 <body>
     <div id="mainStatusBox">
-      <img src = 'chickImage.png' id = "chick">
+      <img src = 'https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/chickImage.png' id = "chick">
         <div id = "mainStatusText">
             <p class = "text_size">육추실 온도 : <input type="text" class="chickBoxStatus" id="tempStatus" value="36.5도" readonly></p>
             <p class = "text_size">육추실 습도 : <input type="text" class="chickBoxStatus" id="humidStatus" value="36.5%" readonly></p>
