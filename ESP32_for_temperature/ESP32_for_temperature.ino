@@ -11,9 +11,23 @@ AWS_IOT testButton;
 #define BME_CS 5 // cs for esp32 vspi
 #define SEALEVELPRESSURE_HPA (1013.25)
 
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
 
-const char* ssid = "BUDONG Wifi";
-const char* password = "64196336";
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
+const int touchPin =4;
+int readPinState;
+const int trigPin = 26;
+const int echoPin = 25;
+<<<<<<< HEAD
+>>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
+
+const char* ssid = "Juni WIFI";
+const char* password = "wnsgnlRj";
 char HOST_ADDRESS[] = "a3llcbaumch20d-ats.iot.ap-northeast-2.amazonaws.com";
 char CLIENT_ID[]= "ESP32ForTemperature";
 char sTOPIC_NAME[]= "$aws/things/ESP32_BME280/shadow/update/delta"; // subscribe topic name
@@ -43,6 +57,18 @@ void mySubCallBackHandler (char *topicName, int payloadLen, char *payLoad)
 
 void setup() {
   Serial.begin(115200);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
+>>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
   bool status;
   // default settings
   Serial.println(WiFi.getMode());
@@ -115,6 +141,14 @@ void lcd_print_status(int temperature, int humid, int delay_time)
 void publishStatusTopic(int temperature, int humid)
 {
   int chickSound = analogRead(soundModule);
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+  
+>>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
+
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
   String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound) + "}}}";
   Serial.println(temp);
   char toChar[1000];
@@ -130,8 +164,30 @@ void publishStatusTopic(int temperature, int humid)
 
 void TESTpublishStatusTopic(int temperature, int humid)
 {
+<<<<<<< HEAD
+<<<<<<< HEAD
   int chickSound = analogRead(soundModule);
   String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound) + "}}}";
+=======
+=======
+
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
+  long duration, distance;
+  digitalWrite(trigPin, LOW); // trig low for 2us
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH); // trig high for 10us
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  duration = pulseIn(echoPin, HIGH);
+  distance = duration * 17 / 1000;
+  readPinState = touchRead(touchPin);
+
+  int chickSound = analogRead(soundModule);
+  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound)+ ",\"depth\":" + String(distance)+ ",\"touchPin\":" + String(readPinState) + "}}}";
+<<<<<<< HEAD
+>>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
+=======
+>>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
   Serial.println(temp);
   char toChar[1000];
   strcpy(toChar, temp.c_str());
