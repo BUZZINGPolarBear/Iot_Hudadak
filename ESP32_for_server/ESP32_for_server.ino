@@ -1,55 +1,29 @@
+// IoT07-1 ESP32 WebServer
 #define SWAP 0 // sw access point
 
 // Load Wi-Fi library
 #include <WiFi.h>
 
 // Replace with your network credentials
-<<<<<<< HEAD
-<<<<<<< HEAD
-const char* ssid = "Juni Wifi";
-const char* password = "wnsgnlRj";
-=======
-const char* ssid = "BUDONG Wifi";
-const char* password = "64196336";
->>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
-=======
-
-const char* ssid = "Juni Wifi";
-const char* password = "wnsgnlRj";
-
->>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
+#if SWAP
+const char* ssid = "ESP32-AP";
+const char* password = "123456789"; // password should be long!!
+#else
+const char *ssid = "Juni WIFI";
+const char *password = "wnsgnlRj";
+#endif
 
 // Set web server port number to 80
 WiFiServer server(80);
 
 // Variable to store the HTTP request
 String header;
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-
 // Auxiliar variables to store the current output state
-String output16State = "off";
-String output17State = "off";
-
+String warmLightState = "off";
+String humidPumpState = "off";
 // Assign output variables to GPIO pins
 const int output16 = 16;
 const int output17 = 17;
-=======
->>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
-
-=======
-// Auxiliar variables to store the current output state
-String output16State = "off";
-String output17State = "off";
-// Assign output variables to GPIO pins
-const int output16 = 16;
-const int output17 = 17;
-<<<<<<< HEAD
->>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
-=======
-
->>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
 // Current time
 unsigned long currentTime = millis();
 // Previous time
@@ -57,13 +31,10 @@ unsigned long previousTime = 0;
 // Define timeout time in milliseconds (example: 2000ms = 2s)
 const long timeoutTime = 2000;
 
+
 void setup()
 {
   Serial.begin(115200);
-
-  // Initialize the output variables as outputs
-  pinMode(output16, OUTPUT);
-  pinMode(output17, OUTPUT);
 
   // Set outputs to LOW
   digitalWrite(output16, LOW);
@@ -124,36 +95,28 @@ void loop()
             client.println("Connection: close");
             client.println();
             // turns the GPIOs on and off
-            if (header.indexOf("GET /16/on") >= 0)
+            if (header.indexOf("GET /warmLight/on") >= 0)
             {
-              Serial.println("GPIO 16 on");
-              output16State = "on";
-              digitalWrite(output16, HIGH);
+              Serial.println("warm Light on");
+              warmLightState = "on";
             }
-            else if (header.indexOf("GET /16/off") >= 0)
+            else if (header.indexOf("GET /warmLight/off") >= 0)
             {
-              Serial.println("GPIO 16 off");
-              output16State = "off";
-              digitalWrite(output16, LOW);
+              Serial.println("warm Light off");
+              warmLightState = "off";
             }
-            else if (header.indexOf("GET /17/on") >= 0)
+            if (header.indexOf("GET /humidPump/on") >= 0)
             {
-              Serial.println("GPIO 17 on");
-              output17State = "on";
-              digitalWrite(output17, HIGH);
+              Serial.println("humid Pump on");
+              humidPumpState = "on";
             }
-            else if (header.indexOf("GET /17/off") >= 0)
+            else if (header.indexOf("GET /humidPump/off") >= 0)
             {
-              Serial.println("GPIO 17 off");
-              output17State = "off";
-              digitalWrite(output17, LOW);
+              Serial.println("humid Pump off");
+              humidPumpState = "off";
             }
 
             // Display the HTML web page
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
             client.println("<!DOCTYPE html><html lang=\"ko\">");
             client.println("<!DOCTYPE html>");
             client.println("<html lang=\"ko\"><head>");
@@ -173,58 +136,30 @@ void loop()
             client.println("<p>육추실 온도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"tempStatus\" value=\"36.5도\" readonly></p>");
             client.println("<p>육추실 습도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"humidStatus\" value=\"36.5%\" readonly></p>");
             client.println("<p>먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"36.5℃\" readonly></p>");
-            client.println("<p>병아리 활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"36.5℃\" readonly></p> <div id=\"mainStatusBtn\">");
+            client.println("<p>활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"36.5℃\" readonly></p> <div id=\"mainStatusBtn\">");
             client.println("<table class=\"buttonTable\"> <thead>");
-            client.println("<tr> <td> <button id = \"BTN\" class=\"button is-warning\" >온열등 ON</button><button id = \"BTN\"class=\"button is-warning\" >가습 하기</button> </td></tr>");
+
+            if (warmLightState == "off") {
+              client.println("<tr> <td> <a href = \"/warmLight/on\"/><button id = \"BTN\" class = \"button is-warning\">온열등 ON</button></a>");
+            }
+            else {
+              client.println("<tr> <td> <a href = \"/warmLight/off\"/><button id = \"BTN\" class = \"button is-warning\">온열등 OFF</button></a>");
+            }
+            if (humidPumpState=="off")
+            {
+              client.println("<a href = \"/humidPump/on\"/><button id = \"BTN\"class=\"button is-warning\" >가습 하기</button></a> </td></tr>");
+            }
+            else
+            {
+              client.println("<a href = \"/humidPump/off\"/><button id = \"BTN\"class=\"button is-warning\" >가습 중단하기</button></a> </td></tr>");
+            }
+            
             client.println("<tr><td><button id = \"BTN\"class=\"button is-warning\" >먹이 급여</button><button id = \"BTN\"class=\"button is-warning\" >물 주기</button> </td> </tr> </thead>");                
             client.println("</table> </div>  </div>  </body> </html>");
             // CSS to style the on/off buttons
             // Feel free to change the background-color and font-size attributes to fit your preferences
-          
-<<<<<<< HEAD
-=======
-            client.println("<!DOCTYPE html><html>");
-            client.println("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
-            client.println("<link rel=\"icon\" href=\"data:,\">");
 
-            // CSS to style the on/off buttons
-            // Feel free to change the background-color and font-size attributes to fit your preferences
-            client.println("<style>html { font-family: Helvetica; display: inline-block; margin: 0px auto; text-align: center;}");
-            client.println(".button { background-color: #4CAF50;border: none; color: white; padding: 16px 40px;");
-            client.println("text-decoration: none; font-size: 30px; margin: 2px; cursor: pointer;}");
-            client.println(".button2 {background-color: #555555;}</style></head>");
-
-            // Web Page Heading
-            client.println("<body><h1>ESP32 Web Server</h1>");
-
-            // Display current state, and ON/OFF buttons for GPIO 16
-            client.println("<p>GPIO 16 - State " + output16State + "</p>");
-
-            // If the output16State is off, it displays the ON button
-            if (output16State == "off")
-            {
-              client.println("<p><a href=\"/16/on\"><button class=\"button\">ON</button></a></p>");
-            }
-            else
-            {
-              client.println("<p><a href=\"/16/off\"><button class=\"button button2\">OFF</button></a></p>");
-            }
-            // Display current state, and ON/OFF buttons for GPIO 17
-            client.println("<p>GPIO 17 - State " + output17State + "</p>");
-            // If the output17State is off, it displays the ON button
-            if (output17State == "off")
-            {
-              client.println("<p><a href=\"/17/on\"><button class=\"button\">ON</button></a></p>");
-            }
-            else
-            {
-              client.println("<p><a href=\"/17/off\"><button class=\"button button2\">OFF</button></a></p>");
-            }
-            client.println("</body></html>");
-            // The HTTP response ends with another blank line
-            client.println();
-            // Break out of the while loop
-            break;
+          break;
           } //** if (currentLine.length() == 0) {
           else
           { // if you got a newline, then clear currentLine
@@ -237,16 +172,10 @@ void loop()
         }
       } //* if (client.available()){
     }   //** while
-
-    // Clear the header variable
-    header = "";
->>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
-=======
-
->>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
+          
     // Close the connection
     client.stop();
     Serial.println("Client disconnected.");
     Serial.println("");
-  } //** if (client) {
-} //** loop() {
+  }
+}
