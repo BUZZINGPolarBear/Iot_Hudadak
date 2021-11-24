@@ -209,16 +209,16 @@ void loop()
             
             client.println("<title>후다닭</title><style>");
             
-            client.println("body{font-family: 'Dongle', cursive;}");
+            client.println("body{font-family: 'Dongle', sans-serif;}");
 
 
             client.println("#mainStatusBox{background-color: white;width: 500px; margin: 5px auto;text-align: center;}");
-            client.println("#chick {width : 20%;height : 8%;margin : 0% 40% 0% 40%;}");
-            client.println("#mainStatusText{width : 100%;align-items: center;justify-content: center;}");
-            client.println(".chickBoxStatus{font-family: 'Dongle', cursive;border: none;width: 150px;font-size: 35px;}");
-            client.println(".text_size {width: 450px;height : 50px;font-size: 35px;padding-left : 25%;} ");
+            client.println("#chick {width : 200px;height : 150px;margin-left : 30px;}");
+            client.println("#mainStatusText{width : 500px;align-items: center;justify-content: center;}");
+            client.println(".chickBoxStatus{font-family: 'Dongle', sans-serif;border: none;width: 150px;font-size: 35px;}");
+            client.println(".text_size {width: 450px;height : 50px;font-size: 35px;margin-left : 100px;} ");
             client.println(".buttonTable{width: 100%;} ");
-            client.println("#BTN {font-family: 'Dongle', cursive;font-size: 30px;width: 200px;height: 100px;margin : 3% 4% 5% 3%;}</style></head> ");
+            client.println("#BTN {font-family: 'Dongle', sans-serif;font-size: 30px;width: 200px;height: 100px;margin : 20px;}</style></head> ");
 
             client.println("<body><div id=\"mainStatusBox\">");
             client.println("<img src = 'https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/chickImage.png' id = \"chick\">");
