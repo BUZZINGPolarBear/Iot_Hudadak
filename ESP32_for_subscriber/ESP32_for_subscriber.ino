@@ -1,6 +1,7 @@
 #include <AWS_IOT.h>
 #include <WiFi.h>
 #include <Arduino_JSON.h>
+#include <ESP32_Servo.h>
 AWS_IOT testButton;
 
 const char* ssid = "Juni WIFI";
@@ -22,9 +23,8 @@ const int relayModule = 2;
 const int waterPumpA=18;
 const int waterPumpB=19;
 const int humidPumpA=22;
-const int humidPumpB=23;
-const int servoPin = 21;
 const int secondary_touchPin = 15;
+const int servoPin = 23;
 
 bool isWaterPumpActivated = false;
 bool isHumidPumpActivated = false;
@@ -32,6 +32,7 @@ int temp=40;
 int humid=70;
 int sound;
 int touchPin=70;
+int depth = 0;
 String str_temp="off";
 String str_humid="off";
 String str_water="off";
@@ -43,6 +44,8 @@ int readPinState=0;
 
 int humidPumpThreshold = 10000;
 int waterPumpThreshold = 3000;
+
+Servo servo1;
 
 void mySubCallBackHandler (char *topicName, int payloadLen, char *payLoad)
 {
@@ -89,6 +92,7 @@ void setup() {
   pinMode(relayModule, OUTPUT);
   pinMode(waterPumpA, OUTPUT);
   pinMode(humidPumpA, OUTPUT);
+  servo1.attach(servoPin);
   delay(2000);
 }
 
@@ -112,7 +116,7 @@ void loop() {
     str_humid = userSelected["humid"];
     str_water = userSelected["water"];
     str_feed = userSelected["feed"];
-    //depth = state ["depth"];
+    depth = state ["depth"];
 
     Serial.println(state);
     Serial.println(temp);
@@ -151,9 +155,20 @@ void loop() {
           digitalWrite(waterPumpA,0);
           break;
         } 
+      }      
+    }
+    if(depth<15 || str_feed=="on")
+    {
+      for(int posDegrees = 0; posDegrees <= 180; posDegrees++) {
+        servo1.write(posDegrees); // 모터의 각도를 설정합니다.
+        Serial.println(posDegrees);
+        delay(20);
       }
-      
-      
+      for(int posDegrees = 180; posDegrees >= 0; posDegrees--) {
+        servo1.write(posDegrees); // 모터의 각도를 설정합니다.
+        Serial.println(posDegrees);
+        delay(20);
+      }
     }
   }  
 }
