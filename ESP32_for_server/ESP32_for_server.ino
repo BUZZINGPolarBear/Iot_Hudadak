@@ -1,8 +1,9 @@
-// IoT07-1 ESP32 WebServer
 #define SWAP 0 // sw access point
 
-// Load Wi-Fi library
 #include <WiFi.h>
+#include <AWS_IOT.h>
+#include <Arduino_JSON.h>
+AWS_IOT testButton;
 
 // Replace with your network credentials
 #if SWAP
@@ -21,6 +22,8 @@ String header;
 // Auxiliar variables to store the current output state
 String warmLightState = "off";
 String humidPumpState = "off";
+String feedState = "off";
+String feedwaterState="off";
 
 // Current time
 unsigned long currentTime = millis();
@@ -29,6 +32,40 @@ unsigned long previousTime = 0;
 // Define timeout time in milliseconds (example: 2000ms = 2s)
 const long timeoutTime = 2000;
 
+char HOST_ADDRESS[] = "a3llcbaumch20d-ats.iot.ap-northeast-2.amazonaws.com";
+char CLIENT_ID[]= "ESP32ForTemperature";
+char sTOPIC_NAME[]= "$aws/things/ESP32_BME280/shadow/update/delta"; // subscribe topic name
+char pTOPIC_NAME[]= "$aws/things/ESP32_BME280/shadow/update"; // publish topic name
+
+int status = WL_IDLE_STATUS;
+int msgCount=0,msgReceived = 0;
+char payload[512];
+char rcvdPayload[512];
+
+void mySubCallBackHandler (char *topicName, int payloadLen, char *payLoad)
+{
+  strncpy(rcvdPayload,payLoad,payloadLen);
+  rcvdPayload[payloadLen] = 0;
+  msgReceived = 1;
+}
+
+void publishTopics(String warmLightState, String humidPumpState, String waterPumpState, String feedState)
+{
+  String temp = "{\"state\":{\"userSelected\":{\"temp\":\"" + warmLightState + "\", \"humid\":\"" + humidPumpState + "\", \"water\":\"" + waterPumpState + "\", \"feed\":\"" + feedState +"\"}}}";
+  Serial.println(temp);
+  char toChar[1000];
+  strcpy(toChar, temp.c_str());
+  sprintf(payload,toChar);
+  for(int i=0; i<3; i++)
+  {//publish 실패를 대비한 3회 전송
+    if(testButton.publish(pTOPIC_NAME,payload) == 0) {
+      Serial.print("Publish Message:");
+      Serial.println(payload);
+    }
+    else
+      Serial.println("Publish failed");
+  }
+}
 void setup()
 {
   Serial.begin(115200);
@@ -56,6 +93,34 @@ void setup()
   Serial.println("WiFi connected.");
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
+  Serial.println(WiFi.getMode());
+  WiFi.disconnect(true);
+  delay(1000);
+  WiFi.mode(WIFI_STA);
+  delay(1000);
+  Serial.print("WIFI status = ");
+  Serial.println(WiFi.getMode()); //++choi
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi..");
+  }
+  Serial.println("Connected to wifi");
+ if(testButton.connect(HOST_ADDRESS,CLIENT_ID)== 0) {
+  Serial.println("Connected to AWS");
+  delay(1000);
+  if(0==testButton.subscribe(sTOPIC_NAME,mySubCallBackHandler)) {
+    Serial.println("Subscribe Successfull");
+  }
+  else {
+    Serial.println("Subscribe Failed, Check the Thing Name and Certificates");
+    while(1);
+    }
+  }
+  else {
+    Serial.println("AWS connection failed, Check the HOST Address");
+    while(1);
+  }
 #endif
   server.begin();
 }
@@ -94,31 +159,39 @@ void loop()
             {
               Serial.println("warm Light on");
               warmLightState = "on";
+              publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
             }
             else if (header.indexOf("GET /warmLight/off") >= 0)
             {
               Serial.println("warm Light off");
               warmLightState = "off";
+              publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
             }
             if (header.indexOf("GET /humidPump/on") >= 0)
             {
               Serial.println("humid Pump on");
               humidPumpState = "on";
+              publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
             }
             else if (header.indexOf("GET /humidPump/off") >= 0)
             {
               Serial.println("humid Pump off");
               humidPumpState = "off";
+              publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
             }
             if (header.indexOf("GET /feed") >= 0)
             {
               Serial.println("feed Chicks");
+              feedState = "on";
+              publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
             }
             if (header.indexOf("GET /feedwater") >= 0)
             {
               Serial.println("feed water for Chicks");
+              feedwaterState = "on";
+              publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
             }
-
+            
 
             // Display the HTML web page
             client.println("<!DOCTYPE html><html lang=\"ko\">");
