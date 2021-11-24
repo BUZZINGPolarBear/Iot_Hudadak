@@ -7,68 +7,65 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cute+Font&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Dongle&display=swap" rel="stylesheet">
     <title>후다닭</title>
     <style>
       body{
-        font-family: 'Cute Font', cursive;
+        font-family: 'Dongle', cursive;
       }
       #mainStatusBox{
           background-color: white;
-          width: 800px;
-          height: 400px;
+          width: 70%;
           margin: 5px auto;
-          padding: 30px;
           text-align: center;
       }
-      .buttonTable{
-        margin: auto;
+      #chick {
+        width : 20%;
+        height : 8%;
+        margin : 0% 40% 0% 40%;
+      }
+      #mainStatusText{
+        width : 100%;
+        align-items: center;
+        justify-content: center;
       }
       .chickBoxStatus{
-          font-family: 'Cute Font', cursive;
+          font-family: 'Dongle', cursive;
           border: none;
           width: 150px;
           font-size: 35px;
       }
+      /* .text_size {
+        width:90%;
+        height : 100%;
+        font-size: 35px;
+        padding-left : 25%;
+      }  */
+      .buttonTable{
+        width: 100%;
+      }
       #BTN {
-        font-family: 'Cute Font', cursive;
+        font-family: 'Dongle', cursive;
         font-size: 40px;
-        width: 50%;
-        height: 50%;
-        margin : 20px 60px 20px 60px;
-      }
-      #chick {
-        width : 30%;
-        height : 70%;
-      }
-      #text_font {
-        /* margin : 30px; */
-      }
-      #mainStatusText{
-        width : 100%;
-        font-size : 35px;
-        /* margin-left: 100px; */
-      }
-
-      #mainStatusBtn {
-        margin-top : 50px;
+        width: 30%;
+        height: 30%;
+        margin : 3% 4% 5% 3%;
       }
     </style>
 </head>
 
 <body>
-  
     <div id="mainStatusBox">
-      <img src = 'https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/chickImage.png' id = "chick">
+      <img src = 'chickImage.png' id = "chick">
         <div id = "mainStatusText">
-            <p id = "text_font">육추실 온도 : <input type="text" class="chickBoxStatus" id="tempStatus" value="36.5도" readonly></p>
-            <p id = "text_font">육추실 습도 : <input type="text" class="chickBoxStatus" id="humidStatus" value="36.5%" readonly></p>
-            <p id = "text_font">활동성 : <input type="text" class="chickBoxStatus" id="chickStatus" value="많음"   readonly></p>    
-            <p id = "text_font">먹이 양 : <input type="text" class="chickBoxStatus" id="foodStatus" value="많음" readonly></p>
+            <p class = "text_size">육추실 온도 : <input type="text" class="chickBoxStatus" id="tempStatus" value="36.5도" readonly></p>
+            <p class = "text_size">육추실 습도 : <input type="text" class="chickBoxStatus" id="humidStatus" value="36.5%" readonly></p>
+            <p class = "text_size">활동성 : <input type="text" class="chickBoxStatus" id="chickStatus" value="많음"   readonly></p>    
+            <p class = "text_size">먹이 양 : <input type="text" class="chickBoxStatus" id="foodStatus" value="많음" readonly></p>
         </div>    
         <div id="mainStatusBtn">
-            <table class="buttonTable">
-                <thead>
+            <table class="buttonTable" >
+                <thead >
                   <tr>
                     <td>
                     <button id = "BTN" class="button is-warning">온열등 ON</button>

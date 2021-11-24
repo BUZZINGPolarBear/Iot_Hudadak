@@ -205,17 +205,23 @@ void loop()
             
             client.println("<meta charset=\"UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
             client.println("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css\"><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">");
-            client.println("<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Cute+Font&display=swap\" rel=\"stylesheet\">");
+            client.println("<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Dongle&display=swap\" rel=\"stylesheet\">");
+            
             client.println("<title>후다닭</title><style>");
-            client.println("body{font-family: 'Cute Font', cursive;} ");
-            client.println("#mainStatusBox{background-color: white; width: 400px; height: 400px; margin: 50px auto; padding: 30px; text-align: center; }");
-            client.println(".buttonTable{margin: auto;}");
-            client.println(".chickBoxStatus{  font-family: 'Cute Font', cursive;font-size: 20px;border: none;width: 50px; font-size: 14px; }");
-            client.println(" #BTN {font-family: 'Cute Font', cursive; font-size: 17px; width: 100px; height: 50px; margin : 20px 25px 10px 25px; } </style>");
+            
+            client.println("body{font-family: 'Dongle', cursive;}");
 
 
-            client.println("</head><body style=""><div id=\"mainStatusBox\">");
-            client.println("<img src = 'https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/chickImage.png' style=\"width: 70px; height: 50px;margin: 15px 0px;\">");
+            client.println("#mainStatusBox{background-color: white;width: 70%; margin: 5px auto;text-align: center;}");
+            client.println("#chick {width : 20%;height : 8%;margin : 0% 40% 0% 40%;}");
+            client.println("#mainStatusText{width : 100%;align-items: center;justify-content: center;}");
+            client.println(".chickBoxStatus{font-family: 'Dongle', cursive;border: none;width: 150px;font-size: 35px;}");
+            client.println(".text_size {width:90%;height : 100%;font-size: 35px;padding-left : 25%;} ");
+            client.println(".buttonTable{width: 100%;} ");
+            client.println("#BTN {font-family: 'Dongle', cursive;font-size: 40px;width: 30%;height: 30%;margin : 3% 4% 5% 3%;}</style></head> ");
+
+            client.println("<body><div id=\"mainStatusBox\">");
+            client.println("<img src = 'chickImage.png' id = \"chick\">");
             client.println("<div id = \"mainStatusText\">");
             if(msgReceived == 1)
             {
@@ -231,14 +237,14 @@ void loop()
               depth = state ["depth"];
               touchPin = state ["touchPin"];
             }
-              client.println("<p>육추실 온도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"tempStatus\" value=\"" + String(temp) + "도\" readonly></p>");
-              client.println("<p>육추실 습도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"humidStatus\" value=\"" + String(humid) +"%\" readonly></p>");
-              if(10<depth) client.println("<p>먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"적음\" style=\"color: red;\" readonly></p> <div id=\"mainStatusBtn\">");
-              else if(depth<=12) client.println("<p>먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"보통\" style=\"color: green;\" readonly></p> <div id=\"mainStatusBtn\">");
-              else client.println("<p>먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"많음\" readonly></p> <div id=\"mainStatusBtn\">");
-              if(sound<20) client.println("<p>활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"적정\" style=\"color: green; readonly></p> <div id=\"mainStatusBtn\">");
-              else if(sound<25) client.println("<p>활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"중간\" style=\" readonly></p> <div id=\"mainStatusBtn\">");
-              else client.println("<p>활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"많음\" style=\"color: red; readonly></p> <div id=\"mainStatusBtn\">");
+              client.println("<p class = \"text_size\">육추실 온도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"tempStatus\" value=\"" + String(temp) + "도\" readonly></p>");
+              client.println("<p class = \"text_size\">육추실 습도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"humidStatus\" value=\"" + String(humid) +"%\" readonly></p>");
+              if(10<depth) client.println("<p id = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"적음\" style=\"color: red;\" readonly></p> <div id=\"mainStatusBtn\">");
+              else if(depth<=12) client.println("<p id = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"보통\" style=\"color: green;\" readonly></p> <div id=\"mainStatusBtn\">");
+              else client.println("<p id = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"많음\" readonly></p> <div id=\"mainStatusBtn\">");
+              if(sound<20) client.println("<p id = \"text_size\">활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"적정\" style=\"color: green; readonly></p> <div id=\"mainStatusBtn\">");
+              else if(sound<25) client.println("<p id = \"text_size\">활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"중간\" style=\" readonly></p> <div id=\"mainStatusBtn\">");
+              else client.println("<p id = \"text_size\">활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"많음\" style=\"color: red; readonly></p> <div id=\"mainStatusBtn\">");
            
               client.println("<table class=\"buttonTable\"> <thead>");
 
