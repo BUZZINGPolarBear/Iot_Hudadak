@@ -11,20 +11,11 @@ AWS_IOT testButton;
 #define BME_CS 5 // cs for esp32 vspi
 #define SEALEVELPRESSURE_HPA (1013.25)
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
 
->>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
 const int touchPin =4;
 int readPinState;
 const int trigPin = 26;
 const int echoPin = 25;
-<<<<<<< HEAD
->>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
-=======
->>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
 
 const char* ssid = "Juni WIFI";
 const char* password = "wnsgnlRj";
@@ -44,6 +35,7 @@ const long intMil = 5000;
 int delayTime;
 int lcdColumns = 16;
 int lcdRows = 2;
+unsigned long long publishCnt = 0;
 
 Adafruit_BME280 bme(BME_CS); // hardware SPI
 LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);  
@@ -57,18 +49,8 @@ void mySubCallBackHandler (char *topicName, int payloadLen, char *payLoad)
 
 void setup() {
   Serial.begin(115200);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-
   pinMode(trigPin, OUTPUT);
   pinMode(echoPin, INPUT);
-
->>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
-=======
-  pinMode(trigPin, OUTPUT);
-  pinMode(echoPin, INPUT);
->>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
   bool status;
   // default settings
   Serial.println(WiFi.getMode());
@@ -112,8 +94,8 @@ void printValues()
 {
   int temperature = bme.readTemperature();
   int humid = bme.readHumidity();
-  lcd_print_status(temperature, humid, 5000);
-  
+  lcd_print_status(temperature, humid, 3000, publishCnt++);
+  //lcd화면 변화는 3초에 한번, publish는 9초에 한번!
 } 
 
 void lcd_print(String first_line_print, String second_line_print, int delay_time)
@@ -134,21 +116,18 @@ void lcd_print_status(int temperature, int humid, int delay_time)
   lcd.print("humid: " + String(humid)+"%");
   //lcd.print("습도: " + String(humid)+"%");
   delay(delay_time);
-  //publishStatusTopic(temperature, humid);
-  TESTpublishStatusTopic(temperature, humid);
+  if(publishCnt%3==0)
+  {
+    //publishStatusTopic(temperature, humid);
+    TESTpublishStatusTopic(temperature, humid);
+    publishCnt=0;//<------------------------------------------------------Overflow방지 위해 넣은 코드인데 작동안될 수 있음 주의!! 테스트하기 구찮....
+  }
 }
 
 void publishStatusTopic(int temperature, int humid)
 {
   int chickSound = analogRead(soundModule);
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-  
->>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
-=======
 
->>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
   String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound) + "}}}";
   Serial.println(temp);
   char toChar[1000];
@@ -164,14 +143,7 @@ void publishStatusTopic(int temperature, int humid)
 
 void TESTpublishStatusTopic(int temperature, int humid)
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-  int chickSound = analogRead(soundModule);
-  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound) + "}}}";
-=======
-=======
 
->>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
   long duration, distance;
   digitalWrite(trigPin, LOW); // trig low for 2us
   delayMicroseconds(2);
@@ -184,10 +156,6 @@ void TESTpublishStatusTopic(int temperature, int humid)
 
   int chickSound = analogRead(soundModule);
   String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound)+ ",\"depth\":" + String(distance)+ ",\"touchPin\":" + String(readPinState) + "}}}";
-<<<<<<< HEAD
->>>>>>> 4c6e99b99e1a555a5c273375c3ff720418f127c7
-=======
->>>>>>> f0c9df5e0a7183c1fa9bfb188ce56dd3f1d73437
   Serial.println(temp);
   char toChar[1000];
   strcpy(toChar, temp.c_str());

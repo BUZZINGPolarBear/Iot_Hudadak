@@ -36,6 +36,11 @@ char HOST_ADDRESS[] = "a3llcbaumch20d-ats.iot.ap-northeast-2.amazonaws.com";
 char CLIENT_ID[]= "ESP32ForTemperature";
 char sTOPIC_NAME[]= "$aws/things/ESP32_BME280/shadow/update/delta"; // subscribe topic name
 char pTOPIC_NAME[]= "$aws/things/ESP32_BME280/shadow/update"; // publish topic name
+int temp=0;
+int humid=0;
+int sound=0;
+int touchPin=0;
+int depth = 0;
 
 int status = WL_IDLE_STATUS;
 int msgCount=0,msgReceived = 0;
@@ -154,7 +159,7 @@ void loop()
             client.println("Content-type:text/html");
             client.println("Connection: close");
             client.println();
-            // turns the GPIOs on and off
+            //turns the GPIOs on and off
              if (header.indexOf("GET /warmLight/on") >= 0)
             {
               Serial.println("warm Light on");
@@ -192,11 +197,12 @@ void loop()
               publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
             }
             
-
+            
             // Display the HTML web page
             client.println("<!DOCTYPE html><html lang=\"ko\">");
             client.println("<!DOCTYPE html>");
             client.println("<html lang=\"ko\"><head>");
+            
             client.println("<meta charset=\"UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
             client.println("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css\"><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">");
             client.println("<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Cute+Font&display=swap\" rel=\"stylesheet\">");
@@ -208,14 +214,33 @@ void loop()
             client.println(" #BTN {font-family: 'Cute Font', cursive; font-size: 17px; width: 100px; height: 50px; margin : 20px 25px 10px 25px; } </style>");
 
 
-             client.println("</head><body style=""><div id=\"mainStatusBox\">");
+            client.println("</head><body style=""><div id=\"mainStatusBox\">");
             client.println("<img src = 'https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/chickImage.png' style=\"width: 70px; height: 50px;margin: 15px 0px;\">");
             client.println("<div id = \"mainStatusText\">");
-            client.println("<p>육추실 온도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"tempStatus\" value=\"36.5도\" readonly></p>");
-            client.println("<p>육추실 습도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"humidStatus\" value=\"36.5%\" readonly></p>");
-            client.println("<p>먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"36.5℃\" readonly></p>");
-            client.println("<p>활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"36.5℃\" readonly></p> <div id=\"mainStatusBtn\">");
-            client.println("<table class=\"buttonTable\"> <thead>");
+            if(msgReceived == 1)
+            {
+              msgReceived = 0;
+              Serial.print("Received Message:");
+              Serial.println(rcvdPayload);
+              // Parse JSON
+              JSONVar myObj = JSON.parse(rcvdPayload);
+              JSONVar state = myObj["state"];
+              temp = state ["temp"];
+              humid = state ["humid"];
+              sound = state ["sound"];
+              depth = state ["depth"];
+              touchPin = state ["touchPin"];
+            }
+              client.println("<p>육추실 온도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"tempStatus\" value=\"" + String(temp) + "도\" readonly></p>");
+              client.println("<p>육추실 습도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"humidStatus\" value=\"" + String(humid) +"%\" readonly></p>");
+              if(10<depth) client.println("<p>먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"적음\" style=\"color: red;\" readonly></p> <div id=\"mainStatusBtn\">");
+              else if(depth<=12) client.println("<p>먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"보통\" style=\"color: green;\" readonly></p> <div id=\"mainStatusBtn\">");
+              else client.println("<p>먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"많음\" readonly></p> <div id=\"mainStatusBtn\">");
+              if(sound<20) client.println("<p>활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"적정\" style=\"color: green; readonly></p> <div id=\"mainStatusBtn\">");
+              else if(sound<25) client.println("<p>활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"중간\" style=\" readonly></p> <div id=\"mainStatusBtn\">");
+              else client.println("<p>활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"많음\" style=\"color: red; readonly></p> <div id=\"mainStatusBtn\">");
+           
+              client.println("<table class=\"buttonTable\"> <thead>");
 
 
             if (warmLightState == "off") {
@@ -239,8 +264,8 @@ void loop()
             // The HTTP response ends with another blank line
             client.println();
             // Break out of the while loop
-            break;
-          } //** if (currentLine.length() == 0) {
+            break; //** if (currentLine.length() == 0) {
+           }
           else
           { // if you got a newline, then clear currentLine
             currentLine = "";
