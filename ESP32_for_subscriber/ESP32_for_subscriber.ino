@@ -24,6 +24,7 @@ const int waterPumpB=19;
 const int humidPumpA=22;
 const int humidPumpB=23;
 const int servoPin = 21;
+const int secondary_touchPin = 15;
 
 bool isWaterPumpActivated = false;
 bool isHumidPumpActivated = false;
@@ -38,6 +39,7 @@ String str_feed="off";
 unsigned long long humidPumpNow=0;
 unsigned long long waterPumpNow=0;
 long long gotTopic=0;
+int readPinState=0;
 
 int humidPumpThreshold = 10000;
 int waterPumpThreshold = 3000;
@@ -91,6 +93,7 @@ void setup() {
 }
 
 void loop() {
+  
   if(msgReceived == 1)
   {
     gotTopic++;
@@ -135,6 +138,22 @@ void loop() {
     {
       digitalWrite(humidPumpA,0);
       humidPumpNow = millis();
+    }
+    if(touchPin>=40 || str_water=="on")
+    {
+      //humidPumpNow = millis();
+      digitalWrite(waterPumpA,1);
+      while(1)
+      {
+        readPinState = touchRead(secondary_touchPin);
+        Serial.println(readPinState);
+        if(readPinState<40){
+          digitalWrite(waterPumpA,0);
+          break;
+        } 
+      }
+      
+      
     }
   }  
 }
