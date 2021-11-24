@@ -15,9 +15,9 @@
       }
       #mainStatusBox{
           background-color: white;
-          width: 400px;
+          width: 800px;
           height: 400px;
-          margin: 50px auto;
+          margin: 5px auto;
           padding: 30px;
           text-align: center;
       }
@@ -26,37 +26,52 @@
       }
       .chickBoxStatus{
           font-family: 'Cute Font', cursive;
-          font-size: 20px;
           border: none;
-          width: 50px;
-          font-size: 14px;
+          width: 150px;
+          font-size: 35px;
       }
-
       #BTN {
         font-family: 'Cute Font', cursive;
-        font-size: 17px;
-        width: 100px;
-        height: 50px;
-        margin : 20px 25px 10px 25px;
+        font-size: 40px;
+        width: 50%;
+        height: 50%;
+        margin : 20px 60px 20px 60px;
+      }
+      #chick {
+        width : 30%;
+        height : 70%;
+      }
+      #text_font {
+        /* margin : 30px; */
+      }
+      #mainStatusText{
+        width : 100%;
+        font-size : 35px;
+        /* margin-left: 100px; */
+      }
+
+      #mainStatusBtn {
+        margin-top : 50px;
       }
     </style>
 </head>
-<body style="">
+
+<body>
+  
     <div id="mainStatusBox">
-      <img src = 'https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/chickImage.png' style="width: 70px; height: 50px;margin: 15px 0px;">
+      <img src = 'https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/chickImage.png' id = "chick">
         <div id = "mainStatusText">
-            <p>육추실 온도 : <input type="text" class="chickBoxStatus" id="tempStatus" value="36.5도" readonly></p> 
-            <p>육추실 습도 : <input type="text" class="chickBoxStatus" id="humidStatus" value="36.5%" readonly></p>
-            <p>먹이 양 : <input type="text" class="chickBoxStatus" id="foodStatus" value="36.5℃" readonly></p>
-            <p>병아리 활동성 : <input type="text" class="chickBoxStatus" id="chickStatus" value="36.5℃" readonly></p>
+            <p id = "text_font">육추실 온도 : <input type="text" class="chickBoxStatus" id="tempStatus" value="36.5도" readonly></p>
+            <p id = "text_font">육추실 습도 : <input type="text" class="chickBoxStatus" id="humidStatus" value="36.5%" readonly></p>
+            <p id = "text_font">활동성 : <input type="text" class="chickBoxStatus" id="chickStatus" value="많음"   readonly></p>    
+            <p id = "text_font">먹이 양 : <input type="text" class="chickBoxStatus" id="foodStatus" value="많음" readonly></p>
         </div>    
         <div id="mainStatusBtn">
             <table class="buttonTable">
                 <thead>
-                
                   <tr>
                     <td>
-                    <button id = "BTN" class="button is-warning" >온열등 ON</button>
+                    <button id = "BTN" class="button is-warning">온열등 ON</button>
                     <button id = "BTN"class="button is-warning" >가습 하기</button>
                   </td>
                   </tr>
@@ -71,8 +86,6 @@
                 </thead>
             </table>
         </div>   
-    </div>
-    
-    
+    </div>  
 </body>
 </html>
