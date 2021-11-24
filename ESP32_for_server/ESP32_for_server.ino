@@ -5,6 +5,7 @@
 #include <WiFi.h>
 
 // Replace with your network credentials
+<<<<<<< HEAD
 #if SWAP
 const char* ssid = "ESP32-AP";
 const char* password = "123456789"; // password should be long!!
@@ -12,18 +13,47 @@ const char* password = "123456789"; // password should be long!!
 const char *ssid = "Juni WIFI";
 const char *password = "wnsgnlRj";
 #endif
+=======
+const char* ssid = "Juni Wifi";
+const char* password = "wnsgnlRj";
+
+char HOST_ADDRESS[] = "전준휘 things 주소?";
+char CLIENT_ID[] = "전준휘 things 이름";
+
+//흠....여기서 구독하는건데..난 이름을 모른다!
+char sTOPIC_NAME1[] = ""
+
+
+int status = WL_IDLE_STATUS;
+int msgCount=0,msgReceived = 0;
+char payload[512];
+char rcvdPayload[512];
+>>>>>>> 8ea05ccb0911c6b7d22e505158d7faa0b09a1108
 
 // Set web server port number to 80
 WiFiServer server(80);
 
 // Variable to store the HTTP request
 String header;
+<<<<<<< HEAD
 // Auxiliar variables to store the current output state
 String warmLightState = "off";
 String humidPumpState = "off";
 // Assign output variables to GPIO pins
 const int output16 = 16;
 const int output17 = 17;
+=======
+
+
+// Auxiliar variables to store the current output state
+String output16State = "off";
+String output17State = "off";
+
+// Assign output variables to GPIO pins
+const int output16 = 16;
+const int output17 = 17;
+
+>>>>>>> 8ea05ccb0911c6b7d22e505158d7faa0b09a1108
 // Current time
 unsigned long currentTime = millis();
 // Previous time
@@ -36,6 +66,15 @@ void setup()
 {
   Serial.begin(115200);
 
+<<<<<<< HEAD
+=======
+  Serial
+
+  // Initialize the output variables as outputs
+  pinMode(output16, OUTPUT);
+  pinMode(output17, OUTPUT);
+
+>>>>>>> 8ea05ccb0911c6b7d22e505158d7faa0b09a1108
   // Set outputs to LOW
   digitalWrite(output16, LOW);
   digitalWrite(output17, LOW);
@@ -139,6 +178,7 @@ void loop()
             client.println("<p>활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"36.5℃\" readonly></p> <div id=\"mainStatusBtn\">");
             client.println("<table class=\"buttonTable\"> <thead>");
 
+<<<<<<< HEAD
             if (warmLightState == "off") {
               client.println("<tr> <td> <a href = \"/warmLight/on\"/><button id = \"BTN\" class = \"button is-warning\">온열등 ON</button></a>");
             }
@@ -154,11 +194,22 @@ void loop()
               client.println("<a href = \"/humidPump/off\"/><button id = \"BTN\"class=\"button is-warning\" >가습 중단하기</button></a> </td></tr>");
             }
             
+=======
+            if (output16State == "off") {
+              client.println("<tr> <td> <a href = \"/16/off\"/><button id = \"BTN\" class = \"button is-warning\">온열등 ON</button>");
+            }
+            else {
+              client.println("<tr> <td> <a href = \"/16/on\"/><button id = \"BTN\" class = \"button is-warning\">온열등 OFF</button>");
+            }
+            
+            client.println("<button id = \"BTN\"class=\"button is-warning\" >가습 하기</button> </td></tr>");
+>>>>>>> 8ea05ccb0911c6b7d22e505158d7faa0b09a1108
             client.println("<tr><td><button id = \"BTN\"class=\"button is-warning\" >먹이 급여</button><button id = \"BTN\"class=\"button is-warning\" >물 주기</button> </td> </tr> </thead>");                
             client.println("</table> </div>  </div>  </body> </html>");
             // CSS to style the on/off buttons
             // Feel free to change the background-color and font-size attributes to fit your preferences
 
+<<<<<<< HEAD
           break;
           } //** if (currentLine.length() == 0) {
           else
@@ -172,10 +223,22 @@ void loop()
         }
       } //* if (client.available()){
     }   //** while
+=======
+      
+>>>>>>> 8ea05ccb0911c6b7d22e505158d7faa0b09a1108
           
     // Close the connection
     client.stop();
     Serial.println("Client disconnected.");
     Serial.println("");
+<<<<<<< HEAD
   }
 }
+=======
+          }
+        }
+      }
+    }
+  }
+}
+>>>>>>> 8ea05ccb0911c6b7d22e505158d7faa0b09a1108
