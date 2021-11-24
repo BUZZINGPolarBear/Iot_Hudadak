@@ -212,16 +212,16 @@ void loop()
             client.println("body{font-family: 'Dongle', cursive;}");
 
 
-            client.println("#mainStatusBox{background-color: white;width: 70%; margin: 5px auto;text-align: center;}");
+            client.println("#mainStatusBox{background-color: white;width: 500px; margin: 5px auto;text-align: center;}");
             client.println("#chick {width : 20%;height : 8%;margin : 0% 40% 0% 40%;}");
             client.println("#mainStatusText{width : 100%;align-items: center;justify-content: center;}");
             client.println(".chickBoxStatus{font-family: 'Dongle', cursive;border: none;width: 150px;font-size: 35px;}");
-            client.println(".text_size {width:90%;height : 100%;font-size: 35px;padding-left : 25%;} ");
+            client.println(".text_size {width: 450px;height : 50px;font-size: 35px;padding-left : 25%;} ");
             client.println(".buttonTable{width: 100%;} ");
-            client.println("#BTN {font-family: 'Dongle', cursive;font-size: 40px;width: 30%;height: 30%;margin : 3% 4% 5% 3%;}</style></head> ");
+            client.println("#BTN {font-family: 'Dongle', cursive;font-size: 30px;width: 200px;height: 100px;margin : 3% 4% 5% 3%;}</style></head> ");
 
             client.println("<body><div id=\"mainStatusBox\">");
-            client.println("<img src = 'chickImage.png' id = \"chick\">");
+            client.println("<img src = 'https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/chickImage.png' id = \"chick\">");
             client.println("<div id = \"mainStatusText\">");
             if(msgReceived == 1)
             {
@@ -239,12 +239,12 @@ void loop()
             }
               client.println("<p class = \"text_size\">육추실 온도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"tempStatus\" value=\"" + String(temp) + "도\" readonly></p>");
               client.println("<p class = \"text_size\">육추실 습도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"humidStatus\" value=\"" + String(humid) +"%\" readonly></p>");
-              if(10<depth) client.println("<p id = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"적음\" style=\"color: red;\" readonly></p> <div id=\"mainStatusBtn\">");
-              else if(depth<=12) client.println("<p id = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"보통\" style=\"color: green;\" readonly></p> <div id=\"mainStatusBtn\">");
-              else client.println("<p id = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"많음\" readonly></p> <div id=\"mainStatusBtn\">");
-              if(sound<20) client.println("<p id = \"text_size\">활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"적정\" style=\"color: green; readonly></p> <div id=\"mainStatusBtn\">");
-              else if(sound<25) client.println("<p id = \"text_size\">활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"중간\" style=\" readonly></p> <div id=\"mainStatusBtn\">");
-              else client.println("<p id = \"text_size\">활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"많음\" style=\"color: red; readonly></p> <div id=\"mainStatusBtn\">");
+              if(10<depth) client.println("<p class = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"적음\" style=\"color: red;\" readonly></p> <div id=\"mainStatusBtn\">");
+              else if(depth<=12) client.println("<p class = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"보통\" style=\"color: green;\" readonly></p> <div id=\"mainStatusBtn\">");
+              else client.println("<p class = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"많음\" readonly></p> <div id=\"mainStatusBtn\">");
+              if(sound<20) client.println("<p class = \"text_size\">활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"적정\" style=\"color: green; readonly></p> <div id=\"mainStatusBtn\">");
+              else if(sound<25) client.println("<p class = \"text_size\">활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"중간\" style=\" readonly></p> <div id=\"mainStatusBtn\">");
+              else client.println("<p class = \"text_size\">활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"많음\" style=\"color: red; readonly></p> <div id=\"mainStatusBtn\">");
            
               client.println("<table class=\"buttonTable\"> <thead>");
 
