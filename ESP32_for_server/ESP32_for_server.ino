@@ -1,38 +1,26 @@
+// IoT07-1 ESP32 WebServer
 #define SWAP 0 // sw access point
 
 // Load Wi-Fi library
 #include <WiFi.h>
 
 // Replace with your network credentials
-const char* ssid = "Juni Wifi";
-const char* password = "wnsgnlRj";
-
-char HOST_ADDRESS[] = "전준휘 things 주소?";
-char CLIENT_ID[] = "전준휘 things 이름";
-
-//흠....여기서 구독하는건데..난 이름을 모른다!
-char sTOPIC_NAME1[] = ""
-
-
-int status = WL_IDLE_STATUS;
-int msgCount=0,msgReceived = 0;
-char payload[512];
-char rcvdPayload[512];
+#if SWAP
+const char* ssid = "ESP32-AP";
+const char* password = "123456789"; // password should be long!!
+#else
+const char *ssid = "Juni WIFI";
+const char *password = "wnsgnlRj";
+#endif
 
 // Set web server port number to 80
 WiFiServer server(80);
 
 // Variable to store the HTTP request
 String header;
-
-
 // Auxiliar variables to store the current output state
-String output16State = "off";
-String output17State = "off";
-
-// Assign output variables to GPIO pins
-const int output16 = 16;
-const int output17 = 17;
+String warmLightState = "off";
+String humidPumpState = "off";
 
 // Current time
 unsigned long currentTime = millis();
@@ -44,21 +32,13 @@ const long timeoutTime = 2000;
 void setup()
 {
   Serial.begin(115200);
-
-  Serial
-
-  // Initialize the output variables as outputs
-  pinMode(output16, OUTPUT);
-  pinMode(output17, OUTPUT);
-
-  // Set outputs to LOW
-  digitalWrite(output16, LOW);
-  digitalWrite(output17, LOW);
 #if SWAP
   WiFi.softAP(ssid, password);
   IPAddress IP = WiFi.softAPIP();
   Serial.print("AP IP address: ");
   Serial.println(IP);
+  server.begin();
+
 #else
   // Connect to Wi-Fi network with SSID and password
   Serial.print("Connecting to ");
@@ -110,30 +90,35 @@ void loop()
             client.println("Connection: close");
             client.println();
             // turns the GPIOs on and off
-            if (header.indexOf("GET /16/on") >= 0)
+             if (header.indexOf("GET /warmLight/on") >= 0)
             {
-              Serial.println("GPIO 16 on");
-              output16State = "on";
-              digitalWrite(output16, HIGH);
+              Serial.println("warm Light on");
+              warmLightState = "on";
             }
-            else if (header.indexOf("GET /16/off") >= 0)
+            else if (header.indexOf("GET /warmLight/off") >= 0)
             {
-              Serial.println("GPIO 16 off");
-              output16State = "off";
-              digitalWrite(output16, LOW);
+              Serial.println("warm Light off");
+              warmLightState = "off";
             }
-            else if (header.indexOf("GET /17/on") >= 0)
+            if (header.indexOf("GET /humidPump/on") >= 0)
             {
-              Serial.println("GPIO 17 on");
-              output17State = "on";
-              digitalWrite(output17, HIGH);
+              Serial.println("humid Pump on");
+              humidPumpState = "on";
             }
-            else if (header.indexOf("GET /17/off") >= 0)
+            else if (header.indexOf("GET /humidPump/off") >= 0)
             {
-              Serial.println("GPIO 17 off");
-              output17State = "off";
-              digitalWrite(output17, LOW);
+              Serial.println("humid Pump off");
+              humidPumpState = "off";
             }
+            if (header.indexOf("GET /feed") >= 0)
+            {
+              Serial.println("feed Chicks");
+            }
+            if (header.indexOf("GET /feedwater") >= 0)
+            {
+              Serial.println("feed water for Chicks");
+            }
+
 
             // Display the HTML web page
             client.println("<!DOCTYPE html><html lang=\"ko\">");
@@ -148,38 +133,58 @@ void loop()
             client.println(".buttonTable{margin: auto;}");
             client.println(".chickBoxStatus{  font-family: 'Cute Font', cursive;font-size: 20px;border: none;width: 50px; font-size: 14px; }");
             client.println(" #BTN {font-family: 'Cute Font', cursive; font-size: 17px; width: 100px; height: 50px; margin : 20px 25px 10px 25px; } </style>");
-                            
-            client.println("</head><body style=""><div id=\"mainStatusBox\">");
+
+
+             client.println("</head><body style=""><div id=\"mainStatusBox\">");
             client.println("<img src = 'https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/chickImage.png' style=\"width: 70px; height: 50px;margin: 15px 0px;\">");
             client.println("<div id = \"mainStatusText\">");
             client.println("<p>육추실 온도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"tempStatus\" value=\"36.5도\" readonly></p>");
             client.println("<p>육추실 습도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"humidStatus\" value=\"36.5%\" readonly></p>");
             client.println("<p>먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"36.5℃\" readonly></p>");
-            client.println("<p>병아리 활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"36.5℃\" readonly></p> <div id=\"mainStatusBtn\">");
+            client.println("<p>활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"36.5℃\" readonly></p> <div id=\"mainStatusBtn\">");
             client.println("<table class=\"buttonTable\"> <thead>");
 
-            if (output16State == "off") {
-              client.println("<tr> <td> <a href = \"/16/off\"/><button id = \"BTN\" class = \"button is-warning\">온열등 ON</button>");
+
+            if (warmLightState == "off") {
+              client.println("<tr> <td> <a href = \"/warmLight/on\"/><button id = \"BTN\" class = \"button is-warning\">온열등 ON</button></a>");
             }
             else {
-              client.println("<tr> <td> <a href = \"/16/on\"/><button id = \"BTN\" class = \"button is-warning\">온열등 OFF</button>");
+              client.println("<tr> <td> <a href = \"/warmLight/off\"/><button id = \"BTN\" class = \"button is-warning\">온열등 OFF</button></a>");
+            }
+            if (humidPumpState=="off")
+            {
+              client.println("<a href = \"/humidPump/on\"/><button id = \"BTN\"class=\"button is-warning\" >가습 하기</button></a> </td></tr>");
+            }
+            else
+            {
+              client.println("<a href = \"/humidPump/off\"/><button id = \"BTN\"class=\"button is-warning\" >가습 중단하기</button></a> </td></tr>");
             }
             
-            client.println("<button id = \"BTN\"class=\"button is-warning\" >가습 하기</button> </td></tr>");
-            client.println("<tr><td><button id = \"BTN\"class=\"button is-warning\" >먹이 급여</button><button id = \"BTN\"class=\"button is-warning\" >물 주기</button> </td> </tr> </thead>");                
+            client.println("<tr><td><a href = \"/feed\"/><button id = \"BTN\"class=\"button is-warning\" >먹이 급여</button></a>");
+            client.println("<a href = \"/feedwater\"/><button id = \"BTN\"class=\"button is-warning\" >물 주기</button></a> </td> </tr> </thead>");  
             client.println("</table> </div>  </div>  </body> </html>");
-            // CSS to style the on/off buttons
-            // Feel free to change the background-color and font-size attributes to fit your preferences
+            // The HTTP response ends with another blank line
+            client.println();
+            // Break out of the while loop
+            break;
+          } //** if (currentLine.length() == 0) {
+          else
+          { // if you got a newline, then clear currentLine
+            currentLine = "";
+          }
+        } //** if (c == '\n') {
+        else if (c != '\r')
+        {                   // if you got anything else but a carriage return character,
+          currentLine += c; // add it to the end of the currentLine
+        }
+      } //* if (client.available()){
+    }   //** while
 
-      
-          
+    // Clear the header variable
+    header = "";
     // Close the connection
     client.stop();
     Serial.println("Client disconnected.");
     Serial.println("");
-          }
-        }
-      }
-    }
-  }
-}
+  } //** if (client) {
+} //** loop() {
