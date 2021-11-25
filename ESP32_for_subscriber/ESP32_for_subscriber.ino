@@ -160,15 +160,15 @@ void loop() {
     }
     if(depth<15 || str_feed=="on")
     {
-      for(int posDegrees = 0; posDegrees <= 180; posDegrees++) {
+      for(int posDegrees = 0; posDegrees <= 45; posDegrees++) {
         servo1.write(posDegrees); // 모터의 각도를 설정합니다.
         //Serial.println(posDegrees);
-        delay(20);
+        delay(10);
       }
-      for(int posDegrees = 180; posDegrees >= 0; posDegrees--) {
+      for(int posDegrees = 450; posDegrees >= 0; posDegrees--) {
         servo1.write(posDegrees); // 모터의 각도를 설정합니다.
         //Serial.println(posDegrees);
-        delay(20);
+        delay(10);
       }
     }
   }  
