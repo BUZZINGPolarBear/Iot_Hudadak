@@ -22,4 +22,12 @@
 <p align="center"> 그림 2 온도와 병아리의 상태</p>
 
 
+## 🐣후다닭 시나리오
+<p align="center"> <img src="https://user-images.githubusercontent.com/35029025/144736813-a9304b20-9011-4fb4-84d6-915581051a85.png"></p>
+
+## 🐣후다닭 프레임워크
+<p align="center"> <img src="https://user-images.githubusercontent.com/35029025/144736829-d519bea8-8645-40b9-9755-447bfd444357.png"></p>
+
+
+
 
