@@ -19,7 +19,7 @@ const int buttonPin = 15; // pushbutton pin
 const int ledPin=16;
 unsigned long preMil = 0;
 const long intMil = 5000;
-const int relayModule = 2;
+const int relayModule = 4;
 const int waterPumpA=18;
 const int waterPumpB=19;
 const int humidPumpA=22;
@@ -28,16 +28,16 @@ const int servoPin = 23;
 
 bool isWaterPumpActivated = false;
 bool isHumidPumpActivated = false;
-int temp=40;
+int temperature_esp32=10;
 int humid=70;
 int sound;
 int touchPin=70;
 int depth = 0;
-String str_temp="off";
+String str_temperature_esp32="off";
 String str_humid="off";
 String str_water="off";
 String str_feed="off";
-unsigned long long humidPumpNow=0;
+unsigned long humidPumpNow=0;
 unsigned long long waterPumpNow=0;
 long long gotTopic=0;
 int readPinState=0;
@@ -97,7 +97,7 @@ void setup() {
 }
 
 void loop() {
-  
+   unsigned long currentMillis = millis();
   if(msgReceived == 1)
   {
     gotTopic++;
@@ -107,33 +107,42 @@ void loop() {
     // Parse JSON
     JSONVar myObj = JSON.parse(rcvdPayload);
     JSONVar state = myObj["state"];
-    temp = state ["temp"];
+    temperature_esp32 = state ["temp"];
     humid = state ["humid"];
     sound = state ["sound"];
     depth = state ["depth"];
     touchPin = state ["touchPin"];
     JSONVar userSelected = myObj["userSelected"];
-    str_temp = userSelected["temp"];
+    str_temperature_esp32 = userSelected["temp"];
     str_humid = userSelected["humid"];
     str_water = userSelected["water"];
     str_feed = userSelected["feed"];
     depth = state ["depth"];
 
     Serial.println(state);
-    Serial.println(temp);
+    Serial.println(temperature_esp32);
     Serial.println(humid);
     Serial.println(sound);
     Serial.println(touchPin);
     
-    Serial.println("str_temp: " + str_temp);
+    Serial.println("str_temperature_esp32: " + str_temperature_esp32);
     Serial.println("str_humid: " + str_humid);
     Serial.println("str_water: " + str_water);
     Serial.println("str_feed: " + str_feed);
     Serial.println("str_depth: " + depth);
-    if(temp<30)digitalWrite(relayModule, LOW);//ON
-    else digitalWrite(relayModule, HIGH);//OFF
     
-    if((humid<50&&isHumidPumpActivated==false) || str_humid=="on")
+    if(temperature_esp32<30)
+    {
+      Serial.println("ONONON: " + temperature_esp32);
+      digitalWrite(relayModule, LOW);//ON
+    }
+    else
+    {
+      Serial.println("HIHIHI: " + temperature_esp32);
+      digitalWrite(relayModule, HIGH);//OFF
+    }
+    
+    if(humid<40)
     {
         digitalWrite(humidPumpA, 1);
         digitalWrite(relayModule, 0);
@@ -144,6 +153,13 @@ void loop() {
       digitalWrite(humidPumpA,0);
       humidPumpNow = millis();
     }
+    if(str_humid == "on" && isHumidPumpActivated==0)
+    {
+      isHumidPumpActivated=1;
+      humidPumpNow = millis();
+      digitalWrite(humidPumpA,1);
+    }
+    
     if(touchPin>=40 || str_water=="on")
     {
       //humidPumpNow = millis();
@@ -165,11 +181,16 @@ void loop() {
         //Serial.println(posDegrees);
         delay(10);
       }
-      for(int posDegrees = 450; posDegrees >= 0; posDegrees--) {
+      for(int posDegrees = 45; posDegrees >= 0; posDegrees--) {
         servo1.write(posDegrees); // 모터의 각도를 설정합니다.
         //Serial.println(posDegrees);
         delay(10);
       }
     }
   }  
+  if(isHumidPumpActivated==1 && currentMillis - humidPumpNow >= 2000)
+  {
+    isHumidPumpActivated=0;
+    digitalWrite(humidPumpA, 0);
+  }
 }
