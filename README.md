@@ -16,17 +16,21 @@
 
  <p align="center"> 그림 1 육추시기에 따른 적정 온도표 </p>
  
-*	또한 마이크를 달아 항시 병아리의 소리를 수음한다. 병아리의 움직임은 활력 징후, 온도의 상태, 천적의 침입 여부를 가늠할 수 있는 힌트가 된다.
+*	마이크를 달아 항시 병아리의 소리를 수음한다. 병아리의 움직임은 활력 징후, 온도의 상태, 천적의 침입 여부를 가늠할 수 있는 힌트가 된다.
 
 <p align="center"> <img src="https://user-images.githubusercontent.com/35029025/141653020-640f21e3-6745-42b2-8e7d-bf068f3beefd.png"></p>
 <p align="center"> 그림 2 온도와 병아리의 상태</p>
 
+* ESP32-CAM을 달아 병아리의 상태를 찍고, S3에 전송한다. 사용자는 어플리케이션에 접근하여 병아리들의 상태를 확인할 수 있다.
+<p align="center"><img src="https://user-images.githubusercontent.com/35029025/145370317-bea7e6ba-8c79-4748-94cb-32c17e8c1c8d.png" width="50%"></p>
+<p align="center"> 그림 3 BROKER역할을 하는 ESP32가 제공하는 Application</p>
+
 
 ## 🐣후다닭 시나리오
-<p align="center"> <img src="https://user-images.githubusercontent.com/35029025/144736813-a9304b20-9011-4fb4-84d6-915581051a85.png"></p>
+<p align="center"> <img src="https://user-images.githubusercontent.com/35029025/144736813-a9304b20-9011-4fb4-84d6-915581051a85.png" width="70%"></p>
 
 ## 🐣후다닭 프레임워크
-<p align="center"> <img src="https://user-images.githubusercontent.com/35029025/144736829-d519bea8-8645-40b9-9755-447bfd444357.png"></p>
+<p align="center"> <img src="https://user-images.githubusercontent.com/35029025/144736829-d519bea8-8645-40b9-9755-447bfd444357.png" width="70%"></p>
 
 
 
