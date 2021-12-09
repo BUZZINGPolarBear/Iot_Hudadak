@@ -107,7 +107,7 @@ void lcd_print(String first_line_print, String second_line_print, int delay_time
   delay(delay_time);
 }
 
-void lcd_print_status(int temperature, int humid, int delay_time)
+void lcd_print_status(int temperature, int humid, int delay_time, int publichCnt)
 {
   lcd.setCursor(0,0);
   lcd.print("temp: " + String(temperature)+"*C");
@@ -116,7 +116,7 @@ void lcd_print_status(int temperature, int humid, int delay_time)
   lcd.print("humid: " + String(humid)+"%");
   //lcd.print("습도: " + String(humid)+"%");
   delay(delay_time);
-  if(publishCnt%3==0)
+  if(publishCnt%1==0)
   {
     //publishStatusTopic(temperature, humid);
     TESTpublishStatusTopic(temperature, humid);
