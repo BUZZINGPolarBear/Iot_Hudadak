@@ -14,8 +14,8 @@
 // Change the WIFI name and password
 // Change the awswebaddress below
 
-const char* ssid = "*****";
-const char* password = "*****";
+const char* ssid = "Juni WIFI";
+const char* password = "wnsgnlRj";
 int capture_interval = 60000; // Microseconds between captures
 
 bool internet_connected = false;
