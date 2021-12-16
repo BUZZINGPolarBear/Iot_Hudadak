@@ -35,10 +35,10 @@ int touchPin=70;
 int depth = 0;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-String auto_temperature="off";
-String manual_temperature="off";
-String auto_humidity="off";
-String manual_humidity="off";
+String auto_lamp="off";
+String manual_lamp="off";
+String auto_humid="off";
+String manual_humid="off";
 String auto_feed="off";
 String manual_feed="off";
 String auto_water="off";
