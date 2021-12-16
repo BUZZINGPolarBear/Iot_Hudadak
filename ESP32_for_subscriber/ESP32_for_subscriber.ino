@@ -33,10 +33,17 @@ int humid=70;
 int sound;
 int touchPin=70;
 int depth = 0;
-String str_temperature_esp32="off";
-String str_humid="off";
-String str_water="off";
-String str_feed="off";
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+String auto_temperature="off";
+String manual_temperature="off";
+String auto_humidity="off";
+String manual_humidity="off";
+String auto_feed="off";
+String manual_feed="off";
+String auto_water="off";
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 unsigned long humidPumpNow=0;
 unsigned long long waterPumpNow=0;
 long long gotTopic=0;
