@@ -265,7 +265,8 @@ void loop()
             }
             
             client.println("<tr><td><a href = \"/feed\"/><button id = \"BTN\"class=\"button is-warning\" >먹이 급여</button></a>");
-            client.println("<a href = \"/feedwater\"/><button id = \"BTN\"class=\"button is-warning\" >물 주기</button></a> </td> </tr> </thead>");  
+            client.println("<a href=\"https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/Inner_HudadakCase_status.jpg\"  target=\"_blank\"><button id = \"BTN\"class=\"button is-warning\" onclick=\"\" >사육장 내부 확인</button></a>
+ </td> </tr> </thead>");  
             client.println("</table> </div>  </div>  </body> </html>");
             // The HTTP response ends with another blank line
             client.println();
