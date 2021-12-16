@@ -164,37 +164,37 @@ void loop()
             {
               Serial.println("warm Light on");
               warmLightState = "on";
-              publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
+              publishTopics(warmLightState, "off", "off", "off");
             }
             else if (header.indexOf("GET /warmLight/off") >= 0)
             {
               Serial.println("warm Light off");
               warmLightState = "off";
-              publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
+              publishTopics(warmLightState, "off", "off", "off");
             }
             if (header.indexOf("GET /humidPump/on") >= 0)
             {
               Serial.println("humid Pump on");
               humidPumpState = "on";
-              publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
+              publishTopics("off", humidPumpState, "off", "off");
             }
             else if (header.indexOf("GET /humidPump/off") >= 0)
             {
               Serial.println("humid Pump off");
               humidPumpState = "off";
-              publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
+              publishTopics("off", humidPumpState, "off", "off");
             }
             if (header.indexOf("GET /feed") >= 0)
             {
               Serial.println("feed Chicks");
               feedState = "on";
-              publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
+              publishTopics("off", "off", "off", feedState);
             }
             if (header.indexOf("GET /feedwater") >= 0)
             {
               Serial.println("feed water for Chicks");
               feedwaterState = "on";
-              publishTopics(warmLightState, humidPumpState, feedwaterState, feedState);
+              publishTopics("off", "off", feedwaterState, "off");
             }
             
             
