@@ -123,7 +123,22 @@ void loop() {
     auto_feed = desired["auto_feed"];
     manual_feed = desired["manual_feed"];
     auto_water = desired["auto_water"];
+<<<<<<< HEAD
+
+    Serial.print(auto_lamp);
+    Serial.print(manual_lamp);
+    Serial.print(auto_humid);
+    Serial.print(manual_humid);
+    Serial.print(auto_feed);
+    Serial.print(manual_feed);
+    Serial.print(auto_water);
     Serial.println();
+
+    
+
+=======
+    Serial.println();
+>>>>>>> b35526f7bc1bf5a43fa302a8bda6f788e5dcf41b
 //====================================================================================================================
 //요기 위엔 세은이땅
 //====================================================================================================================
@@ -137,6 +152,70 @@ void loop() {
 //String manual_feed="off";
 //String auto_water="off";
 
+<<<<<<< HEAD
+//    if(temperature_esp32<30)
+//    {
+//      Serial.println("ONONON: " + temperature_esp32);
+//      digitalWrite(relayModule, LOW);//ON
+//    }
+//    else
+//    {
+//      Serial.println("HIHIHI: " + temperature_esp32);
+//      digitalWrite(relayModule, HIGH);//OFF
+//    }
+//    
+//    if(humid<40)
+//    {
+//        digitalWrite(humidPumpA, 1);
+//        digitalWrite(relayModule, 0);
+//        humidPumpNow = millis();
+//    }
+//    else if(humid>=50 || str_humid=="off")
+//    {
+//      digitalWrite(humidPumpA,0);
+//      humidPumpNow = millis();
+//    }
+//    if(str_humid == "on" && isHumidPumpActivated==0)
+//    {
+//      isHumidPumpActivated=1;
+//      humidPumpNow = millis();
+//      digitalWrite(humidPumpA,1);
+//    }
+//    
+//    if(touchPin>=40 || str_water=="on")
+//    {
+//      //humidPumpNow = millis();
+//      digitalWrite(waterPumpA,1);
+//      while(1)
+//      {
+//        readPinState = touchRead(secondary_touchPin);
+//        Serial.println(readPinState);
+//        if(readPinState<40){
+//          digitalWrite(waterPumpA,0);
+//          break;
+//        } 
+//      }      
+//    }
+//    if(depth<15 || str_feed=="on")
+//    {
+//      for(int posDegrees = 0; posDegrees <= 45; posDegrees++) {
+//        servo1.write(posDegrees); // 모터의 각도를 설정합니다.
+//        //Serial.println(posDegrees);
+//        delay(10);
+//      }
+//      for(int posDegrees = 45; posDegrees >= 0; posDegrees--) {
+//        servo1.write(posDegrees); // 모터의 각도를 설정합니다.
+//        //Serial.println(posDegrees);
+//        delay(10);
+//      }
+//    }
+//  }  
+//  if(isHumidPumpActivated==1 && currentMillis - humidPumpNow >= 2000)
+//  {
+//    isHumidPumpActivated=0;
+//    digitalWrite(humidPumpA, 0);
+//  }
+=======
 //온열등 관련 부분
     if(auto_lamp=="on" || manual_lamp=="on")
     {
@@ -222,5 +301,6 @@ void loop() {
   {
     isHumidPumpActivated=0;
     digitalWrite(humidPumpA, 0);
+>>>>>>> b35526f7bc1bf5a43fa302a8bda6f788e5dcf41b
   }
 }
