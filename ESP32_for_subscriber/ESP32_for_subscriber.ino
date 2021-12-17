@@ -74,7 +74,7 @@ void setup() {
   Serial.println(WiFi.getMode()); //++choi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
+    delay(10000);
     Serial.println("Connecting to WiFi..");
   }
   Serial.println("Connected to wifi");
@@ -109,9 +109,10 @@ void loop() {
   {
     gotTopic++;
     msgReceived = 0;
-    Serial.print("Received Message:");
+    Serial.print("\nReceived Message:");
     Serial.println(rcvdPayload);
     // Parse JSON
+    Serial.println("==================================");
     JSONVar myObj = JSON.parse(rcvdPayload);
     JSONVar state = myObj["state"];
     JSONVar desired = state["desired"];
@@ -122,6 +123,7 @@ void loop() {
     auto_feed = desired["auto_feed"];
     manual_feed = desired["manual_feed"];
     auto_water = desired["auto_water"];
+<<<<<<< HEAD
 
     Serial.print(auto_lamp);
     Serial.print(manual_lamp);
@@ -134,12 +136,23 @@ void loop() {
 
     
 
+=======
+    Serial.println();
+>>>>>>> b35526f7bc1bf5a43fa302a8bda6f788e5dcf41b
 //====================================================================================================================
 //요기 위엔 세은이땅
 //====================================================================================================================
 //요기 아래 나의 땅
 //====================================================================================================================
+//String auto_lamp="off";
+//String manual_lamp="off";
+//String auto_humid="off";
+//String manual_humid="off";
+//String auto_feed="off";
+//String manual_feed="off";
+//String auto_water="off";
 
+<<<<<<< HEAD
 //    if(temperature_esp32<30)
 //    {
 //      Serial.println("ONONON: " + temperature_esp32);
@@ -202,5 +215,82 @@ void loop() {
 //    isHumidPumpActivated=0;
 //    digitalWrite(humidPumpA, 0);
 //  }
+=======
+//온열등 관련 부분
+    if(auto_lamp=="on" || manual_lamp=="on")
+    {
+      //Serial.println("ONONON: " + temperature_esp32);
+      Serial.print("\nauto_lamp: " +  auto_lamp);
+      Serial.print("\nmanual_lamp: " + manual_lamp);
+      digitalWrite(relayModule, LOW);//ON
+    }
+    if(auto_lamp=="off")
+    {
+      Serial.print("\nauto_lamp: " +  auto_lamp);
+      Serial.print("\nmanual_lamp: " + manual_lamp);
+      digitalWrite(relayModule, HIGH);//OFF
+    }
+    if(manual_lamp=="off")
+    {
+      Serial.print("\nauto_lamp: " +  auto_lamp);
+      Serial.print("\nmanual_lamp: " + manual_lamp);
+      digitalWrite(relayModule, HIGH);//OFF
+    }
+//온도 끝
+//습도 펌프 부분 
+    if(auto_humid=="on" || manual_humid=="on")
+    {
+        Serial.print("\nauto_humid: " +  auto_humid);
+        Serial.print("\nmanual_humid: " + manual_humid);
+        digitalWrite(humidPumpA, 1);
+        humidPumpNow = millis();
+    }
+    else if(auto_humid=="off" || auto_humid=="off")
+    {
+      Serial.print("\nauto_humid: " +  auto_humid);
+      Serial.print("\nmanual_humid: " + manual_humid);
+      digitalWrite(humidPumpA,0);
+      humidPumpNow = millis();
+    }
+//습도 끝
+//물주기 부분    
+    if(auto_water=="on")
+    {
+      Serial.print("\nauto_water: " + auto_water);
+      //humidPumpNow = millis();
+      digitalWrite(waterPumpA,1);
+      while(1)
+      {
+        readPinState = touchRead(secondary_touchPin);
+        Serial.println(readPinState);
+        if(readPinState<40){
+          digitalWrite(waterPumpA,0);
+          break;
+        } 
+      }      
+    }
+//물주기 끝
+//먹이주기 시작
+    if(auto_feed=="on"||manual_feed=="on")
+    {
+      Serial.print("\nauto_feed: " + auto_feed);
+      Serial.print("\nmanual_feed: " + manual_feed);
+      for(int posDegrees = 0; posDegrees <= 45; posDegrees++) {
+        servo1.write(posDegrees); // 모터의 각도를 설정합니다.
+        //Serial.println(posDegrees);
+        delay(10);
+      }
+      for(int posDegrees = 45; posDegrees >= 0; posDegrees--) {
+        servo1.write(posDegrees); // 모터의 각도를 설정합니다.
+        //Serial.println(posDegrees);
+        delay(10);
+      }
+    }
+  }  
+  if(isHumidPumpActivated==1 && currentMillis - humidPumpNow >= 2000)
+  {
+    isHumidPumpActivated=0;
+    digitalWrite(humidPumpA, 0);
+>>>>>>> b35526f7bc1bf5a43fa302a8bda6f788e5dcf41b
   }
 }
