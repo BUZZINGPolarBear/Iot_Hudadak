@@ -35,10 +35,10 @@ int touchPin=70;
 int depth = 0;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-String auto_temperature="off";
-String manual_temperature="off";
-String auto_humidity="off";
-String manual_humidity="off";
+String auto_lamp="off";
+String manual_lamp="off";
+String auto_humid="off";
+String manual_humid="off";
 String auto_feed="off";
 String manual_feed="off";
 String auto_water="off";
@@ -74,7 +74,7 @@ void setup() {
   Serial.println(WiFi.getMode()); //++choi
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
-    delay(1000);
+    delay(10000);
     Serial.println("Connecting to WiFi..");
   }
   Serial.println("Connected to wifi");
@@ -109,72 +109,75 @@ void loop() {
   {
     gotTopic++;
     msgReceived = 0;
-    Serial.print("Received Message:");
+    Serial.print("\nReceived Message:");
     Serial.println(rcvdPayload);
     // Parse JSON
+    Serial.println("==================================");
     JSONVar myObj = JSON.parse(rcvdPayload);
     JSONVar state = myObj["state"];
-    temperature_esp32 = state ["temp"];
-    humid = state ["humid"];
-    sound = state ["sound"];
-    depth = state ["depth"];
-    touchPin = state ["touchPin"];
-    JSONVar userSelected = myObj["userSelected"];
-    str_temperature_esp32 = userSelected["temp"];
-    str_humid = userSelected["humid"];
-    str_water = userSelected["water"];
-    str_feed = userSelected["feed"];
-    depth = state ["depth"];
-
-    Serial.println(state);
-    Serial.println(temperature_esp32);
-    Serial.println(humid);
-    Serial.println(sound);
-    Serial.println(touchPin);
-    
-    Serial.println("str_temperature_esp32: " + str_temperature_esp32);
-    Serial.println("str_humid: " + str_humid);
-    Serial.println("str_water: " + str_water);
-    Serial.println("str_feed: " + str_feed);
-    Serial.println("str_depth: " + depth);
-
+    JSONVar desired = state["desired"];
+    auto_lamp = desired["auto_lamp"];
+    manual_lamp = desired["manual_lamp"];
+    auto_humid = desired["auto_humid"];
+    manual_humid = desired["manual_humid"];
+    auto_feed = desired["auto_feed"];
+    manual_feed = desired["manual_feed"];
+    auto_water = desired["auto_water"];
+    Serial.println();
 //====================================================================================================================
 //요기 위엔 세은이땅
 //====================================================================================================================
 //요기 아래 나의 땅
 //====================================================================================================================
+//String auto_lamp="off";
+//String manual_lamp="off";
+//String auto_humid="off";
+//String manual_humid="off";
+//String auto_feed="off";
+//String manual_feed="off";
+//String auto_water="off";
 
-    if(temperature_esp32<30)
+//온열등 관련 부분
+    if(auto_lamp=="on" || manual_lamp=="on")
     {
-      Serial.println("ONONON: " + temperature_esp32);
+      //Serial.println("ONONON: " + temperature_esp32);
+      Serial.print("\nauto_lamp: " +  auto_lamp);
+      Serial.print("\nmanual_lamp: " + manual_lamp);
       digitalWrite(relayModule, LOW);//ON
     }
-    else
+    if(auto_lamp=="off")
     {
-      Serial.println("HIHIHI: " + temperature_esp32);
+      Serial.print("\nauto_lamp: " +  auto_lamp);
+      Serial.print("\nmanual_lamp: " + manual_lamp);
       digitalWrite(relayModule, HIGH);//OFF
     }
-    
-    if(humid<40)
+    if(manual_lamp=="off")
     {
+      Serial.print("\nauto_lamp: " +  auto_lamp);
+      Serial.print("\nmanual_lamp: " + manual_lamp);
+      digitalWrite(relayModule, HIGH);//OFF
+    }
+//온도 끝
+//습도 펌프 부분 
+    if(auto_humid=="on" || manual_humid=="on")
+    {
+        Serial.print("\nauto_humid: " +  auto_humid);
+        Serial.print("\nmanual_humid: " + manual_humid);
         digitalWrite(humidPumpA, 1);
-        digitalWrite(relayModule, 0);
         humidPumpNow = millis();
     }
-    else if(humid>=50 || str_humid=="off")
+    else if(auto_humid=="off" || auto_humid=="off")
     {
+      Serial.print("\nauto_humid: " +  auto_humid);
+      Serial.print("\nmanual_humid: " + manual_humid);
       digitalWrite(humidPumpA,0);
       humidPumpNow = millis();
     }
-    if(str_humid == "on" && isHumidPumpActivated==0)
+//습도 끝
+//물주기 부분    
+    if(auto_water=="on")
     {
-      isHumidPumpActivated=1;
-      humidPumpNow = millis();
-      digitalWrite(humidPumpA,1);
-    }
-    
-    if(touchPin>=40 || str_water=="on")
-    {
+      Serial.print("\nauto_water: " + auto_water);
       //humidPumpNow = millis();
       digitalWrite(waterPumpA,1);
       while(1)
@@ -187,8 +190,12 @@ void loop() {
         } 
       }      
     }
-    if(depth<15 || str_feed=="on")
+//물주기 끝
+//먹이주기 시작
+    if(auto_feed=="on"||manual_feed=="on")
     {
+      Serial.print("\nauto_feed: " + auto_feed);
+      Serial.print("\nmanual_feed: " + manual_feed);
       for(int posDegrees = 0; posDegrees <= 45; posDegrees++) {
         servo1.write(posDegrees); // 모터의 각도를 설정합니다.
         //Serial.println(posDegrees);
