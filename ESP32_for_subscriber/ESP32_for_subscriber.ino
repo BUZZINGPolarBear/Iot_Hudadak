@@ -24,7 +24,7 @@ const int waterPumpA=18;
 const int waterPumpB=19;
 const int humidPumpA=22;
 const int secondary_touchPin = 15;
-const int servoPin = 23;
+const int servoPin = 21;
 
 bool isWaterPumpActivated = false;
 bool isHumidPumpActivated = false;
@@ -275,17 +275,27 @@ void loop() {
     {
       Serial.print("\nauto_feed: " + auto_feed);
       Serial.print("\nmanual_feed: " + manual_feed);
-      for(int posDegrees = 0; posDegrees <= 45; posDegrees++) {
-        servo1.write(posDegrees); // 모터의 각도를 설정합니다.
-        //Serial.println(posDegrees);
-        delay(10);
-      }
-      for(int posDegrees = 45; posDegrees >= 0; posDegrees--) {
-        servo1.write(posDegrees); // 모터의 각도를 설정합니다.
-        //Serial.println(posDegrees);
-        delay(10);
-      }
+      servo1.write(100);
+      Serial.println("\nSERVO IS ON!!\n");
+      delay(1000);
+      servo1.write(0);
+      delay(1000);
     }
+//    String temp = "{\"state\":{\"reported\": {\"depth\":8}, \"userSelected\":{\"feed\":\"off\"}}}";
+//    Serial.println(temp);
+//    char toChar[1000];
+//    strcpy(toChar, temp.c_str());
+//    sprintf(payload,toChar);
+//    for(int i=0; i<3; i++)
+//    {
+//      if(testButton.publish(pTOPIC_NAME,payload) == 0) {
+//      Serial.print("Publish Message:");
+//      Serial.println(payload);
+//      }
+//      else{
+//        Serial.println("Publish failed");
+//      }
+//    }
   }  
   if(isHumidPumpActivated==1 && currentMillis - humidPumpNow >= 2000)
   {

@@ -42,6 +42,7 @@ int sound=0;
 int touchPin=0;
 int depth = 0;
 
+
 int status = WL_IDLE_STATUS;
 int msgCount=0,msgReceived = 0;
 char payload[512];
@@ -161,7 +162,7 @@ void loop()
             client.println("Connection: close");
             client.println();
             //turns the GPIOs on and off
-    
+
              if (header.indexOf("GET /warmLight/on") >= 0)
             {
               Serial.println("warm Light on");
@@ -171,22 +172,24 @@ void loop()
             {
               Serial.println("warm Light off");
               warmLightState = "off";
-              }
+            }
+
             if (header.indexOf("GET /humidPump/on") >= 0)
             {
               Serial.println("humid Pump on");
               humidPumpState = "on";
-              }
+            }
+
             else if (header.indexOf("GET /humidPump/off") >= 0)
             {
               Serial.println("humid Pump off");
               humidPumpState = "off";
-              }
+            }
             if (header.indexOf("GET /feed") >= 0)
             {
               Serial.println("feed Chicks");
               feedState = "on";
-              }
+            }
             if (header.indexOf("GET /feedwater") >= 0)
             {
               Serial.println("feed water for Chicks");
@@ -263,6 +266,7 @@ void loop()
             
             client.println("<tr><td><a href = \"/feed\"/><button id = \"BTN\"class=\"button is-warning\" >먹이 급여</button></a>");
             client.println("<a href=\"https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/Inner_HudadakCase_status.jpg\" target=\"_blank\"><button id = \"BTN\"class=\"button is-warning\" onclick=\"\" >사육장 내부 확인</button></a></td> </tr> </thead>");  
+
             client.println("</table> </div>  </div>  </body> </html>");
             // The HTTP response ends with another blank line
             client.println();
