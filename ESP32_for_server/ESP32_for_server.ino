@@ -42,7 +42,6 @@ int sound=0;
 int touchPin=0;
 int depth = 0;
 
-
 int status = WL_IDLE_STATUS;
 int msgCount=0,msgReceived = 0;
 char payload[512];
@@ -149,10 +148,9 @@ void loop()
         Serial.write(c);        // print it out the serial monitor
         header += c;
         if (c == '\n')
-        
         { // if the byte is a newline character
           // if the current line is blank, you got two newline characters in a row.
-          // that's the end of the client HTTP request, so send a response: 
+          // that's the end of the client HTTP request, so send a response:
           if (currentLine.length() == 0)
           {
             // HTTP headers always start with a response code (e.g. HTTP/1.1 200 OK)
@@ -162,40 +160,42 @@ void loop()
             client.println("Connection: close");
             client.println();
             //turns the GPIOs on and off
-
              if (header.indexOf("GET /warmLight/on") >= 0)
             {
               Serial.println("warm Light on");
               warmLightState = "on";
+              publishTopics(warmLightState, "off", "off", "off");
             }
             else if (header.indexOf("GET /warmLight/off") >= 0)
             {
               Serial.println("warm Light off");
               warmLightState = "off";
+              publishTopics(warmLightState, "off", "off", "off");
             }
-
             if (header.indexOf("GET /humidPump/on") >= 0)
             {
               Serial.println("humid Pump on");
               humidPumpState = "on";
+              publishTopics("off", humidPumpState, "off", "off");
             }
-
             else if (header.indexOf("GET /humidPump/off") >= 0)
             {
               Serial.println("humid Pump off");
               humidPumpState = "off";
+              publishTopics("off", humidPumpState, "off", "off");
             }
             if (header.indexOf("GET /feed") >= 0)
             {
               Serial.println("feed Chicks");
               feedState = "on";
+              publishTopics("off", "off", "off", feedState);
             }
             if (header.indexOf("GET /feedwater") >= 0)
             {
               Serial.println("feed water for Chicks");
               feedwaterState = "on";
+              publishTopics("off", "off", feedwaterState, "off");
             }
-              publishTopics(warmLightState, humidPumpState, feedState, feedwaterState);
             
             
             // Display the HTML web page
@@ -206,7 +206,7 @@ void loop()
             client.println("<meta charset=\"UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
             client.println("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css\"><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">");
             client.println("<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Dongle&display=swap\" rel=\"stylesheet\">");
-            
+            client.println("<meta http-equiv=\"refresh\" content=\"5\">");
             client.println("<title>후다닭</title><style>");
             
             client.println("body{font-family: 'Dongle', sans-serif;}");
@@ -265,8 +265,7 @@ void loop()
             }
             
             client.println("<tr><td><a href = \"/feed\"/><button id = \"BTN\"class=\"button is-warning\" >먹이 급여</button></a>");
-            client.println("<a href=\"https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/Inner_HudadakCase_status.jpg\" target=\"_blank\"><button id = \"BTN\"class=\"button is-warning\" onclick=\"\" >사육장 내부 확인</button></a></td> </tr> </thead>");  
-
+            client.println("<a href = \"/feedwater\"/><button id = \"BTN\"class=\"button is-warning\" >물 주기</button></a> </td> </tr> </thead>");  
             client.println("</table> </div>  </div>  </body> </html>");
             // The HTTP response ends with another blank line
             client.println();
@@ -278,7 +277,8 @@ void loop()
             currentLine = "";
           }
         } //** if (c == '\n') {
-        else if (c != '\r'){                   // if you got anything else but a carriage return character,
+        else if (c != '\r')
+        {                   // if you got anything else but a carriage return character,
           currentLine += c; // add it to the end of the currentLine
         }
       } //* if (client.available()){
@@ -291,4 +291,4 @@ void loop()
     Serial.println("Client disconnected.");
     Serial.println("");
   } //** if (client) {
-} //** loop() 
+} //** loop() {
