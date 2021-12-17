@@ -206,19 +206,19 @@ void loop()
             client.println("<meta charset=\"UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
             client.println("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css\"><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">");
             client.println("<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Dongle&display=swap\" rel=\"stylesheet\">");
-            
+            client.println("<meta http-equiv=\"refresh\" content=\"5\">");
             client.println("<title>후다닭</title><style>");
             
             client.println("body{font-family: 'Dongle', sans-serif;}");
 
 
-            client.println("#mainStatusBox{background-color: white;width: 500px; margin: 5px auto;text-align: center;}");
+            client.println("#mainStatusBox{background-color: white;width: 400px; margin: 5px auto;text-align: center;}");
             client.println("#chick {width : 200px;height : 150px;margin-left : 30px;}");
-            client.println("#mainStatusText{width : 500px;align-items: center;justify-content: center;}");
-            client.println(".chickBoxStatus{font-family: 'Dongle', sans-serif;border: none;width: 150px;font-size: 35px;}");
-            client.println(".text_size {width: 450px;height : 50px;font-size: 35px;margin-left : 100px;} ");
-            client.println(".buttonTable{width: 100%;} ");
-            client.println("#BTN {font-family: 'Dongle', sans-serif;font-size: 30px;width: 200px;height: 100px;margin : 20px;}</style></head> ");
+            client.println("#mainStatusText{width : 380px;align-items: center;justify-content: center;}");
+            client.println(".chickBoxStatus{font-family: 'Dongle', sans-serif;border: none; font-size: 35px;}");
+            client.println(".text_size {width: 450px;height : 50px;font-size: 35px;margin-left : 80px;} ");
+            client.println(".buttonTable{width: 100%; margin-left: 80px} ");
+            client.println("#BTN {font-family: 'Dongle', sans-serif;font-size: 30px; width: 150px;height: 100px;margin : 20px;}</style></head> ");
 
             client.println("<body><div id=\"mainStatusBox\">");
             client.println("<img src = 'https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/chickImage.png' id = \"chick\">");
