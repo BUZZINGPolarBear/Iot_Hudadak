@@ -24,7 +24,7 @@ String warmLightState = "off";
 String humidPumpState = "off";
 String feedState = "off";
 String feedwaterState="off";
-
+String sound_feed="off";
 // Current time
 unsigned long currentTime = millis();
 // Previous time
@@ -187,14 +187,8 @@ void loop()
             if (header.indexOf("GET /feed") >= 0)
             {
               Serial.println("feed Chicks");
-              feedState = "on";
+              feedState = "off";
               publishTopics("off", "off", "off", feedState);
-            }
-            if (header.indexOf("GET /feedwater") >= 0)
-            {
-              Serial.println("feed water for Chicks");
-              feedwaterState = "on";
-              publishTopics("off", "off", feedwaterState, "off");
             }
             
             
@@ -212,12 +206,12 @@ void loop()
             client.println("body{font-family: 'Dongle', sans-serif;}");
 
 
-            client.println("#mainStatusBox{background-color: white;width: 500px; margin: 5px auto;text-align: center;}");
+            client.println("#mainStatusBox{background-color: white;width: 400px; margin: 5px auto;text-align: center;}");
             client.println("#chick {width : 200px;height : 150px;margin-left : 30px;}");
-            client.println("#mainStatusText{width : 500px;align-items: center;justify-content: center;}");
-            client.println(".chickBoxStatus{font-family: 'Dongle', sans-serif;border: none;width: 150px;font-size: 35px;}");
-            client.println(".text_size {width: 450px;height : 50px;font-size: 35px;margin-left : 100px;} ");
-            client.println(".buttonTable{width: 100%;} ");
+            client.println("#mainStatusText{width : 380px;align-items: center;justify-content: center;}");
+            client.println(".chickBoxStatus{font-family: 'Dongle', sans-serif; border: none; font-size: 35px;}");
+            client.println(".text_size {width: 450px;height : 50px;font-size: 35px;margin-left : 80px;} ");
+            client.println(".buttonTable{width: 100%; margin-left:30px} ");
             client.println("#BTN {font-family: 'Dongle', sans-serif;font-size: 30px;width: 200px;height: 100px;margin : 20px;}</style></head> ");
 
             client.println("<body><div id=\"mainStatusBox\">");
@@ -236,37 +230,42 @@ void loop()
               sound = state ["sound"];
               depth = state ["depth"];
               touchPin = state ["touchPin"];
+
+              JSONVar desired = state["desired"];
+              sound_feed = desired["sound_feed"];
             }
-              client.println("<p class = \"text_size\">육추실 온도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"tempStatus\" value=\"" + String(temp) + "도\" readonly></p>");
-              client.println("<p class = \"text_size\">육추실 습도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"humidStatus\" value=\"" + String(humid) +"%\" readonly></p>");
+              client.println("<p class = \"text_size\">사육장 온도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"tempStatus\" value=\"" + String(temp) + "도\" readonly></p>");
+              client.println("<p class = \"text_size\">사육장 습도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"humidStatus\" value=\"" + String(humid) +"%\" readonly></p>");
               if(10<depth) client.println("<p class = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"적음\" style=\"color: red;\" readonly></p> <div id=\"mainStatusBtn\">");
               else if(depth<=12) client.println("<p class = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"보통\" style=\"color: green;\" readonly></p> <div id=\"mainStatusBtn\">");
               else client.println("<p class = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"많음\" readonly></p> <div id=\"mainStatusBtn\">");
               if(sound<20) client.println("<p class = \"text_size\">활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"적정\" style=\"color: green; readonly></p> <div id=\"mainStatusBtn\">");
               else if(sound<25) client.println("<p class = \"text_size\">활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"중간\" style=\" readonly></p> <div id=\"mainStatusBtn\">");
               else client.println("<p class = \"text_size\">활동성 : <input type=\"text\" class=\"chickBoxStatus\" id=\"chickStatus\" value=\"많음\" style=\"color: red; readonly></p> <div id=\"mainStatusBtn\">");
-           
-              client.println("<table class=\"buttonTable\"> <thead>");
 
+              client.println("<table class=\"buttonTable\"> ");
 
+            client.println("<thead> <tr>");
             if (warmLightState == "off") {
-              client.println("<tr> <td> <a href = \"/warmLight/on\"/><button id = \"BTN\" class = \"button is-warning\">온열등 ON</button></a>");
+              client.println("<a href = \"/warmLight/on\"/><button id = \"BTN\" class = \"button is-warning\">온열등 ON</button></a>");
             }
             else {
-              client.println("<tr> <td> <a href = \"/warmLight/off\"/><button id = \"BTN\" class = \"button is-warning\">온열등 OFF</button></a>");
+              client.println("<a href = \"/warmLight/off\"/><button id = \"BTN\" class = \"button is-warning\">온열등 OFF</button></a>");
             }
             if (humidPumpState=="off")
             {
-              client.println("<a href = \"/humidPump/on\"/><button id = \"BTN\"class=\"button is-warning\" >가습 하기</button></a> </td></tr>");
+              client.println("<a href = \"/humidPump/on\"/><button id = \"BTN\"class=\"button is-warning\" >가습 하기</button></a>");
             }
             else
             {
-              client.println("<a href = \"/humidPump/off\"/><button id = \"BTN\"class=\"button is-warning\" >가습 중단하기</button></a> </td></tr>");
+              client.println("<a href = \"/humidPump/off\"/><button id = \"BTN\"class=\"button is-warning\" >가습 중단하기</button></a>");
             }
-            
-            client.println("<tr><td><a href = \"/feed\"/><button id = \"BTN\"class=\"button is-warning\" >먹이 급여</button></a>");
-            client.println("<a href = \"/feedwater\"/><button id = \"BTN\"class=\"button is-warning\" >물 주기</button></a> </td> </tr> </thead>");  
-            client.println("</table> </div>  </div>  </body> </html>");
+            client.println("</tr> </thead>");
+            client.println("<tbody> <tr>");
+            if(sound_feed=="off")client.println("<button id = \"BTN\" class=\"button is-warning\" title=\"Disabled button\" disabled>먹이 알림</button>");
+            else client.println("<button id = \"BTN\"class=\"button is-warning\" >먹이 알림 종료</button>");
+            client.println("<a href=\"https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/Inner_HudadakCase_status.jpg.jpg\"  target=\"_blank\"><button id = \"BTN\"class=\"button is-warning\"  >사육장 내부 확인</button></a>");  
+            client.println("</tr> </tbody> </table> </div> </div> </body> </html>");
             // The HTTP response ends with another blank line
             client.println();
             // Break out of the while loop
