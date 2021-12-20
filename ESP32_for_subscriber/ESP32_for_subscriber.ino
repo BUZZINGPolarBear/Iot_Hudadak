@@ -25,6 +25,7 @@ const int waterPumpB=19;
 const int humidPumpA=22;
 const int secondary_touchPin = 15;
 const int servoPin = 21;
+const int buzPin = 23;
 
 bool isWaterPumpActivated = false;
 bool isHumidPumpActivated = false;
@@ -39,8 +40,7 @@ String auto_lamp="off";
 String manual_lamp="off";
 String auto_humid="off";
 String manual_humid="off";
-String auto_feed="off";
-String manual_feed="off";
+String sound_feed="off";
 String auto_water="off";
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -48,6 +48,16 @@ unsigned long humidPumpNow=0;
 unsigned long long waterPumpNow=0;
 long long gotTopic=0;
 int readPinState=0;
+
+const int duty = 18;
+int sVal;
+int nFrq[]={0, 277, 294, 311, 330, 349, 370, 392, 415,440, 466,  494};
+const int ledChannel = 0;
+const int resolution = 8;
+const int duty = 18;
+
+int sVal;
+int nFrq[]={262, 277, 294, 311, 330, 349, 370, 392, 415,440, 466,  494}; 
 
 int humidPumpThreshold = 10000;
 int waterPumpThreshold = 3000;
@@ -59,6 +69,14 @@ void mySubCallBackHandler (char *topicName, int payloadLen, char *payLoad)
   strncpy(rcvdPayload,payLoad,payloadLen);
   rcvdPayload[payloadLen] = 0;
   msgReceived = 1;
+}
+
+void playNote(int note, int dur)
+{
+  ledcSetup(ledChannel, nFrq[note], resolution);
+  ledcWrite(ledChannel, duty);
+  Serial.println(note);
+  delay(dur);
 }
 
 void setup() {
@@ -99,7 +117,7 @@ void setup() {
   pinMode(relayModule, OUTPUT);
   pinMode(waterPumpA, OUTPUT);
   pinMode(humidPumpA, OUTPUT);
-  servo1.attach(servoPin);
+  ledcAttachPin(buzPin, ledChannel);
   delay(2000);
 }
 
@@ -120,8 +138,7 @@ void loop() {
     manual_lamp = desired["manual_lamp"];
     auto_humid = desired["auto_humid"];
     manual_humid = desired["manual_humid"];
-    auto_feed = desired["auto_feed"];
-    manual_feed = desired["manual_feed"];
+    sound_feed = desired["sound_feed"];
     auto_water = desired["auto_water"];
 //====================================================================================================================
 //요기 위엔 세은이땅
@@ -191,31 +208,16 @@ void loop() {
     }
 //물주기 끝
 //먹이주기 시작
-    if(auto_feed=="on"||manual_feed=="on")
+    if(sound_feed=="on")
     {
-      Serial.print("\nauto_feed: " + auto_feed);
-      Serial.print("\nmanual_feed: " + manual_feed);
-      servo1.write(100);
-      Serial.println("\nSERVO IS ON!!\n");
-      delay(1000);
-      servo1.write(0);
-      delay(1000);
+      while(1)
+      {
+        playNote(sVal-0x30, 250);playNote(9, 250);
+        playNote(sVal-0x30, 250);playNote(5, 250);
+        playNote(sVal-0x30, 250);playNote(0, 250);
+      }
+      
     }
-//    String temp = "{\"state\":{\"reported\": {\"depth\":8}, \"userSelected\":{\"feed\":\"off\"}}}";
-//    Serial.println(temp);
-//    char toChar[1000];
-//    strcpy(toChar, temp.c_str());
-//    sprintf(payload,toChar);
-//    for(int i=0; i<3; i++)
-//    {
-//      if(testButton.publish(pTOPIC_NAME,payload) == 0) {
-//      Serial.print("Publish Message:");
-//      Serial.println(payload);
-//      }
-//      else{
-//        Serial.println("Publish failed");
-//      }
-//    }
   }  
   if(isHumidPumpActivated==1 && currentMillis - humidPumpNow >= 2000)
   {
