@@ -22,7 +22,8 @@
 <p align="center"> 그림 2 온도와 병아리의 상태</p>
 
 * ESP32-CAM을 달아 병아리의 상태를 찍고, S3에 전송한다. 사용자는 어플리케이션에 접근하여 병아리들의 상태를 확인할 수 있다.
-<p align="center"><img src="https://user-images.githubusercontent.com/35029025/145370317-bea7e6ba-8c79-4748-94cb-32c17e8c1c8d.png" width="50%"></p>
+
+<p align="center"><img src="https://user-images.githubusercontent.com/35029025/146713121-fe7ab816-2dfb-4038-842a-ca2f679d3c1a.png" width="40%"></p>
 <p align="center"> 그림 3 BROKER역할을 하는 ESP32가 제공하는 Application</p>
 
 
