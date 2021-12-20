@@ -185,7 +185,7 @@ static esp_err_t take_send_photo()
    Serial.print("Time:" );  Serial.print(Time);
    Serial.print("MAC: ");  Serial.print(MAC);
 
-   String post_url2 = "https://xjes44kiea.execute-api.ap-northeast-2.amazonaws.com/"; // Location where images are POSTED
+   String post_url2 = "https://xjes44kiea.execute-api.ap-northeast-2.amazonaws.com/hudadak/"; // Location where images are POSTED
    char post_url3[post_url2.length() + 1];
    post_url2.toCharArray(post_url3, sizeof(post_url3));
   
