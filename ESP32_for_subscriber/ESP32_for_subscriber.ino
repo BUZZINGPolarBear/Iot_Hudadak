@@ -49,15 +49,11 @@ unsigned long long waterPumpNow=0;
 long long gotTopic=0;
 int readPinState=0;
 
-const int duty = 18;
 int sVal;
 int nFrq[]={0, 277, 294, 311, 330, 349, 370, 392, 415,440, 466,  494};
 const int ledChannel = 0;
 const int resolution = 8;
 const int duty = 18;
-
-int sVal;
-int nFrq[]={262, 277, 294, 311, 330, 349, 370, 392, 415,440, 466,  494}; 
 
 int humidPumpThreshold = 10000;
 int waterPumpThreshold = 3000;
@@ -75,7 +71,6 @@ void playNote(int note, int dur)
 {
   ledcSetup(ledChannel, nFrq[note], resolution);
   ledcWrite(ledChannel, duty);
-  Serial.println(note);
   delay(dur);
 }
 
@@ -207,21 +202,49 @@ void loop() {
       }      
     }
 //물주기 끝
-//먹이주기 시작
-    if(sound_feed=="on")
-    {
-      while(1)
-      {
-        playNote(sVal-0x30, 250);playNote(9, 250);
-        playNote(sVal-0x30, 250);playNote(5, 250);
-        playNote(sVal-0x30, 250);playNote(0, 250);
-      }
-      
-    }
+    
   }  
   if(isHumidPumpActivated==1 && currentMillis - humidPumpNow >= 2000)
   {
     isHumidPumpActivated=0;
     digitalWrite(humidPumpA, 0);
+  }
+  if(sound_feed=="on")
+  {
+    Serial.println("sound_feed: " + sound_feed);
+    while(1)
+    {
+      playNote(9, 250);
+      playNote(5, 250);
+      ledcSetup(ledChannel, 0, resolution);
+      delay(250);
+      playNote(9, 250);
+      playNote(5, 250);
+      ledcSetup(ledChannel, 0, resolution);
+      delay(250);
+      playNote(9, 250);
+      playNote(5, 250);
+      ledcSetup(ledChannel, 0, resolution);
+      delay(250);
+      playNote(9, 250);
+      playNote(5, 250);
+      ledcSetup(ledChannel, 0, resolution);
+      delay(1250);
+      if(msgReceived == 1)
+      {
+        gotTopic++;
+        msgReceived = 0;
+        Serial.print("\nReceived Message:");
+        Serial.println(rcvdPayload);
+        // Parse JSON
+        Serial.println("==================================");
+        JSONVar myObj = JSON.parse(rcvdPayload);
+        JSONVar state = myObj["state"];
+        JSONVar desired = state["desired"];
+        sound_feed = desired["sound_feed"];
+        if(sound_feed=="off") break;
+      }
+      
+    }
   }
 }
