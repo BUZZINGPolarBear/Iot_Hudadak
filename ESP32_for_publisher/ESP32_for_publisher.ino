@@ -37,18 +37,12 @@ int lcdColumns = 16;
 int lcdRows = 2;
 unsigned long long publishCnt = 0;
 
-String auto_lamp="off";
 String manual_lamp="off";
-String auto_humid="off";
 String manual_humid="off";
 String sound_feed="off";
-String auto_water="off";
-String auto_lamp="off";
-String manual_lamp="off";
-String auto_humid="off";
-String manual_humid="off";
-String sound_feed="off";
-String auto_water="off";
+String old_manual_lamp="off";
+String old_manual_humid="off";
+String old_sound_feed="off";
 
 Adafruit_BME280 bme(BME_CS); // hardware SPI
 LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);  
@@ -100,24 +94,6 @@ void setup() {
 
 void loop() 
 {
-  if(msgReceived == 1)
-  {
-    gotTopic++;
-    msgReceived = 0;
-    Serial.print("\nReceived Message:");
-    Serial.println(rcvdPayload);
-    // Parse JSON
-    Serial.println("==================================");
-    JSONVar myObj = JSON.parse(rcvdPayload);
-    JSONVar state = myObj["state"];
-    JSONVar desired = state["desired"];
-    auto_lamp = desired["auto_lamp"];
-    manual_lamp = desired["manual_lamp"];
-    auto_humid = desired["auto_humid"];
-    manual_humid = desired["manual_humid"];
-    sound_feed = desired["sound_feed"];
-    auto_water = desired["auto_water"];
-  }
   printValues();
 }
 
@@ -168,7 +144,7 @@ void publishStatusTopic(int temperature, int humid)
   readPinState = touchRead(touchPin);
 
   int chickSound = analogRead(soundModule);
-  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound)+ ",\"depth\":" + String(distance)+ ",\"touchPin\":" + String(readPinState)+",\"userSelected\":{\"temp\":" + String(manual_lamp) + ",\"humid\":" + String(manual_humid) ",\"feed\":" + String(sound_feed) + "}}}";
+  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound)+ ",\"depth\":" + String(distance)+ ",\"touchPin\":" + String(readPinState)+"\"}}}";
   Serial.println(temp);
   char toChar[1000];
   strcpy(toChar, temp.c_str());
@@ -193,9 +169,8 @@ void TESTpublishStatusTopic(int temperature, int humid)
   duration = pulseIn(echoPin, HIGH);
   distance = duration * 17 / 1000;
   readPinState = touchRead(touchPin);
-
   int chickSound = analogRead(soundModule);
-  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound)+ ",\"depth\":" + String(distance)+ ",\"touchPin\":" + String(readPinState)+",\"userSelected\":{\"temp\":" + String(manual_lamp) + ",\"humid\":" + String(manual_humid) ",\"feed\":" + String(sound_feed) + "}}}";
+  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound)+ ",\"depth\":" + String(distance)+ ",\"touchPin\":" + String(readPinState)+"\"}}}";
   Serial.println(temp);
   char toChar[1000];
   strcpy(toChar, temp.c_str());
