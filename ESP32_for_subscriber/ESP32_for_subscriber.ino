@@ -175,14 +175,12 @@ void loop() {
         Serial.print("\nauto_humid: " +  auto_humid);
         Serial.print("\nmanual_humid: " + manual_humid);
         digitalWrite(humidPumpA, 1);
-        humidPumpNow = millis();
     }
-    else if(auto_humid=="off" || auto_humid=="off")
+    else if(auto_humid=="off" || manual_humid=="off")
     {
       Serial.print("\nauto_humid: " +  auto_humid);
       Serial.print("\nmanual_humid: " + manual_humid);
       digitalWrite(humidPumpA,0);
-      humidPumpNow = millis();
     }
 //습도 끝
 //물주기 부분    
@@ -195,20 +193,14 @@ void loop() {
       {
         readPinState = touchRead(secondary_touchPin);
         Serial.println(readPinState);
-        if(readPinState<40){
+        if(readPinState<44){
           digitalWrite(waterPumpA,0);
           break;
         } 
       }      
     }
 //물주기 끝
-    
   }  
-  if(isHumidPumpActivated==1 && currentMillis - humidPumpNow >= 2000)
-  {
-    isHumidPumpActivated=0;
-    digitalWrite(humidPumpA, 0);
-  }
   if(sound_feed=="on")
   {
     Serial.println("sound_feed: " + sound_feed);
