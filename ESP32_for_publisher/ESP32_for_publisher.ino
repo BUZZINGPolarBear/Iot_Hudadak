@@ -37,6 +37,13 @@ int lcdColumns = 16;
 int lcdRows = 2;
 unsigned long long publishCnt = 0;
 
+String manual_lamp="off";
+String manual_humid="off";
+String sound_feed="off";
+String old_manual_lamp="off";
+String old_manual_humid="off";
+String old_sound_feed="off";
+
 Adafruit_BME280 bme(BME_CS); // hardware SPI
 LiquidCrystal_I2C lcd(0x27, lcdColumns, lcdRows);  
 
@@ -137,7 +144,7 @@ void publishStatusTopic(int temperature, int humid)
   readPinState = touchRead(touchPin);
 
   int chickSound = analogRead(soundModule);
-  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound)+ ",\"depth\":" + String(distance)+ ",\"touchPin\":" + String(readPinState) + "}}}";
+  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound)+ ",\"depth\":" + String(distance)+ ",\"touchPin\":" + String(readPinState)+"\"}}}";
   Serial.println(temp);
   char toChar[1000];
   strcpy(toChar, temp.c_str());
@@ -162,9 +169,8 @@ void TESTpublishStatusTopic(int temperature, int humid)
   duration = pulseIn(echoPin, HIGH);
   distance = duration * 17 / 1000;
   readPinState = touchRead(touchPin);
-
   int chickSound = analogRead(soundModule);
-  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound)+ ",\"depth\":" + String(distance)+ ",\"touchPin\":" + String(readPinState) + "}}}";
+  String temp = "{\"state\":{\"reported\": {\"temp\":" + String(temperature) + ",\"humid\":" + String(humid)+ ",\"sound\":" + String(chickSound)+ ",\"depth\":" + String(distance)+ ",\"touchPin\":" + String(readPinState)+"\"}}}";
   Serial.println(temp);
   char toChar[1000];
   strcpy(toChar, temp.c_str());

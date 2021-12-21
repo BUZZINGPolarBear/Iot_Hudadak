@@ -40,7 +40,7 @@ int temp=0;
 int humid=0;
 int sound=0;
 int touchPin=0;
-int depth = 0;
+int depth = 15;
 
 int status = WL_IDLE_STATUS;
 int msgCount=0,msgReceived = 0;
@@ -132,6 +132,22 @@ void setup()
 
 void loop()
 {
+  if(msgReceived == 1)
+  {
+    msgReceived = 0;
+    Serial.print("Received Message:");
+    Serial.println(rcvdPayload);
+    // Parse JSON
+    JSONVar myObj = JSON.parse(rcvdPayload);
+    JSONVar state = myObj ["state"];
+    temp = state ["temp"];
+    humid = state ["humid"];
+    sound = state ["sound"];
+    depth = state ["depth"];
+    touchPin = state ["touchPin"];
+    Serial.println("temp: " + String(temp));
+    Serial.println("humid: " + String(humid));
+  }
   WiFiClient client = server.available(); // Listen for incoming clients
   if (client)
   { // If a new client connects,
@@ -184,7 +200,13 @@ void loop()
               humidPumpState = "off";
               publishTopics("off", humidPumpState, "off", "off");
             }
-            if (header.indexOf("GET /feed") >= 0)
+            if (header.indexOf("GET /soundfeed/on") >= 0)
+            {
+              Serial.println("feed Chicks");
+              feedState = "on";
+              publishTopics("off", "off", "off", feedState);
+            }
+            else if (header.indexOf("GET /soundfeed/off") >= 0)
             {
               Serial.println("feed Chicks");
               feedState = "off";
@@ -200,7 +222,6 @@ void loop()
             client.println("<meta charset=\"UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
             client.println("<link rel=\"stylesheet\" href=\"https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css\"><link rel=\"preconnect\" href=\"https://fonts.googleapis.com\">");
             client.println("<link rel=\"preconnect\" href=\"https://fonts.gstatic.com\" crossorigin><link href=\"https://fonts.googleapis.com/css2?family=Dongle&display=swap\" rel=\"stylesheet\">");
-            client.println("<meta http-equiv=\"refresh\" content=\"5\">");
             client.println("<title>후다닭</title><style>");
             
             client.println("body{font-family: 'Dongle', sans-serif;}");
@@ -209,31 +230,15 @@ void loop()
             client.println("#mainStatusBox{background-color: white;width: 400px; margin: 5px auto;text-align: center;}");
             client.println("#chick {width : 200px;height : 150px;margin-left : 30px;}");
             client.println("#mainStatusText{width : 380px;align-items: center;justify-content: center;}");
-            client.println(".chickBoxStatus{font-family: 'Dongle', sans-serif; border: none; font-size: 35px;}");
-            client.println(".text_size {width: 450px;height : 50px;font-size: 35px;margin-left : 80px;} ");
+            client.println(".chickBoxStatus{font-family: 'Dongle', sans-serif; border: none; font-size: 32px; width:80px}");
+            client.println(".text_size {height : 50px; font-size: 35px; margin-left : 10px;} ");
             client.println(".buttonTable{width: 100%; margin-left:30px} ");
             client.println("#BTN {font-family: 'Dongle', sans-serif;font-size: 30px;width: 200px;height: 100px;margin : 20px;}</style></head> ");
 
             client.println("<body><div id=\"mainStatusBox\">");
             client.println("<img src = 'https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/chickImage.png' id = \"chick\">");
             client.println("<div id = \"mainStatusText\">");
-            if(msgReceived == 1)
-            {
-              msgReceived = 0;
-              Serial.print("Received Message:");
-              Serial.println(rcvdPayload);
-              // Parse JSON
-              JSONVar myObj = JSON.parse(rcvdPayload);
-              JSONVar state = myObj["state"];
-              temp = state ["temp"];
-              humid = state ["humid"];
-              sound = state ["sound"];
-              depth = state ["depth"];
-              touchPin = state ["touchPin"];
-
-              JSONVar desired = state["desired"];
-              sound_feed = desired["sound_feed"];
-            }
+           
               client.println("<p class = \"text_size\">사육장 온도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"tempStatus\" value=\"" + String(temp) + "도\" readonly></p>");
               client.println("<p class = \"text_size\">사육장 습도 : <input type=\"text\" class=\"chickBoxStatus\" id=\"humidStatus\" value=\"" + String(humid) +"%\" readonly></p>");
               if(10<depth) client.println("<p class = \"text_size\">먹이 양 : <input type=\"text\" class=\"chickBoxStatus\" id=\"foodStatus\" value=\"적음\" style=\"color: red;\" readonly></p> <div id=\"mainStatusBtn\">");
@@ -262,8 +267,17 @@ void loop()
             }
             client.println("</tr> </thead>");
             client.println("<tbody> <tr>");
-            if(sound_feed=="off")client.println("<button id = \"BTN\" class=\"button is-warning\" title=\"Disabled button\" disabled>먹이 알림</button>");
-            else client.println("<button id = \"BTN\"class=\"button is-warning\" >먹이 알림 종료</button>");
+            Serial.println("DEPTH: " + String(depth));
+            if(depth>=11)
+            {
+              client.println("<a href = \"/soundfeed/off\"/><button id = \"BTN\"class=\"button is-warning\" >먹이 알림 종료</button></a>");
+            }
+            else
+            {
+              client.println("<a href = \"/soundfeed/on\"/><button id = \"BTN\" class=\"button is-danger\" title=\"Disabled button\" disabled>먹이가 충분해요</button></a>");
+              sound_feed="off";
+            }
+            
             client.println("<a href=\"https://s3.ap-northeast-2.amazonaws.com/daara2021.03.15test/Inner_HudadakCase_status.jpg.jpg\"  target=\"_blank\"><button id = \"BTN\"class=\"button is-warning\"  >사육장 내부 확인</button></a>");  
             client.println("</tr> </tbody> </table> </div> </div> </body> </html>");
             // The HTTP response ends with another blank line

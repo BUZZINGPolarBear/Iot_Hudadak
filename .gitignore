@@ -5,3 +5,4 @@ configKeys/
 *.pem
 *.zip
 *.jpg
+.DS_Store
