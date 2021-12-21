@@ -31,7 +31,7 @@
 <p align="center"> <img src="https://user-images.githubusercontent.com/35029025/144736813-a9304b20-9011-4fb4-84d6-915581051a85.png" width="70%"></p>
 
 ## 🐣후다닭 프레임워크
-<p align="center"> <img src="https://user-images.githubusercontent.com/35029025/144736829-d519bea8-8645-40b9-9755-447bfd444357.png" width="70%"></p>
+<p align="center"> <img src="https://user-images.githubusercontent.com/35029025/146897534-0b808f22-3100-429d-9c95-ff4a0cdb69bb.png" width="70%"></p>
 
 
 
