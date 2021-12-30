@@ -34,5 +34,5 @@
 <p align="center"> <img src="https://user-images.githubusercontent.com/35029025/146897534-0b808f22-3100-429d-9c95-ff4a0cdb69bb.png" width="70%"></p>
 
 ## 🐣후다닭 설명동영상
-<p align="center"> <a href="https://www.youtube.com/watch?v=t0PWDF6byS4&ab_channel=%EC%A0%84%EC%A4%80%ED%9C%98" target="_blank"><img src="https://user-images.githubusercontent.com/35029025/147408447-3052479c-7f71-4324-a592-d00a722be182.png" width="70%"></p></a>
+<p align="center"> <a href="https://www.youtube.com/watch?v=zwCsOEdAxOQ&t=1s&ab_channel=%EC%A0%84%EC%A4%80%ED%9C%98" target="_blank"><img src="https://user-images.githubusercontent.com/35029025/147408447-3052479c-7f71-4324-a592-d00a722be182.png" width="70%"></p></a>
 
