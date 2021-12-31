@@ -36,3 +36,6 @@
 ## 🐣후다닭 설명동영상
 <p align="center"> <a href="https://www.youtube.com/watch?v=zwCsOEdAxOQ&t=1s&ab_channel=%EC%A0%84%EC%A4%80%ED%9C%98" target="_blank"><img src="https://user-images.githubusercontent.com/35029025/147408447-3052479c-7f71-4324-a592-d00a722be182.png" width="70%"></p></a>
 
+## 🏆수상
+🥈2021 IoT 프로젝트 과목 2등 수상
+
